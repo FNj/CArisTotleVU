@@ -282,7 +282,7 @@ Tomuto ovšem musí předcházet tvorba celého testu a příslušného modelu z
 Pro výběr otázek v rámci našeho přístupu k adaptivnímu testování se používá bayesovských sítí. Jedná se o grafický model (ve smyslu teorie grafů) popisující vztahy mezi náhodnými veličinami pomocí podmíněných pravděpodobnostních rozdělení.
 
 \section{Formální definice}
-Bayesovskou síť pro naše účely můžeme definovat formálně jako uspořádanou dvojici orientovaného acyklického grafu $B_S = (V,E)$ (tzv. struktura sítě), kde každému prvku $i \in V$ odpovídá náhodná veličina $X_i$, a množiny $B_P$  funkcí $P(X_i\,|\,(X_j)_{j\in pa(i)})$, které udávají podmíněné pravděpodobnostní rozdělení $X_i$ v závislosti na hodnotě proměnných odpovídajících (přímým) předchůdcům $i$ v $B_S$ značeným jako $pa(i)$. Množinu všech náhodných veličin budu značit $X=\{X_i\,|\,i \in V\}$.
+Bayesovskou síť pro naše účely můžeme definovat formálně jako uspořádanou dvojici orientovaného acyklického grafu $B_S = (V,E)$ (tzv. struktura sítě), kde každému prvku $i \in V$ odpovídá náhodná veličina $X_i$, a množiny $B_P$  funkcí $P(X_i\,|\,(X_j)_{j\in pa(i)})$, které udávají podmíněné pravděpodobnostní rozdělení $X_i$ v závislosti na hodnotě veličin odpovídajících (přímým) předchůdcům $i$ v $B_S$ značeným jako $pa(i)$. Množinu všech náhodných veličin budu značit $X=\{X_i\,|\,i \in V\}$.
 
 V našem případě budou $X_i$ nabývat jen určitých diskrétních hodnot z množin $\mathbb{X}_i$, takže si prvky $B_P$ můžeme také představovat prostě jako funkce zobrazující vektor stavů předchůdců $i$ v $B_S$ na vektor pravděpodobností stavů $X_i$. Prakticky lze takového funkce zapsat jako tak zvanou tabulku podmíněných pravděpodobností.
 
@@ -293,7 +293,7 @@ Jeden z předpokladů pro běžné výpočty v bayesovských sítích je, že pr
 
 Tento požadavek v praxi nelze striktně splnit, protože by model musel pokrýt opravdu všechny předpoklady pro správné zodpovězení otázek. Modely se tedy snaží pokrýt jen ty nejvíce relevantní a nejlépe měřitelné. Komplexita zamšlených modelů také značně zvyšuje nároky na sběr dat pro jejich návrh.
 
-Pro výpočty na bayesovské síti je také zpravidla nutné mít k dispozici nějaká apriorní pravděpodobnostní rozdělení $X_i$, a to aspoň u těch proměnných, jejichž uzly v síti nemají předky.
+Pro výpočty na bayesovské síti je také zpravidla nutné mít k dispozici nějaká apriorní pravděpodobnostní rozdělení $X_i$, a to aspoň u těch náhodných veličin, jejichž uzly v síti nemají předky.
 
 \section{Příklady}
 \label{sec:net_examples}
