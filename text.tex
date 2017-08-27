@@ -57,6 +57,8 @@
 \newcommand{\ti}{\textit} % zkrácený příkaz pro kurzívu
 \newcommand{\tb}{\textbf} % zkrácený příkaz pro tučné písmo
 
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
 
 %% --- zde jsou zavedeny některé "konstanty" - některé musíte změnit! --- %%
 \newcommand{\cvut}{České vysoké učení technické v~Praze}
@@ -257,7 +259,7 @@ Zde napište text úvodu (1-3 strany, nerozdělujte na podkapitoly) nebo jej vlo
 %---------------------------------------
 
 \chapter{Adaptivní testování obecně}
-Adaptivní počítačové testování je způsob získávání informací o znalostech studenta, při kterém se průběh testování mění na základě informací získaných v jeho průběhu (nebo i před jeho zahájením). V anglicky psané literatuře se pro toto používá označení computerized adaptive testing (CAT). Využití CAT umožňuje kombinovat výhody individuálního testování jako zvýšená přesnost a úspora času i námahy testovaného s možností hromadného testování.
+Adaptivní počítačové testování je způsob získávání informací o znalostech studenta, při kterém se průběh testování mění na základě informací získaných v jeho průběhu (nebo i před jeho zahájením). V anglicky psané literatuře se pro toto používá označení computerized adaptive testing (CAT). Využití adaptivního testování umožňuje kombinovat výhody individuálního testování jako zvýšená přesnost a úspora času i námahy testovaného s možností hromadného testování.
 
 \section{Motivace}
 Hromadně aplikovaný test musí, aby fungoval dobře pro širokou škálu úrovní jednotlivých měřených dovedností, obsahovat otázky různé obtížnosti. Pokud by na příklad neobsahoval lehké otázky, nemohl by test přesně měřit nízkou úroveň příslušných dovedností.
@@ -276,10 +278,18 @@ V případě, že je úroveň měřených dovedností studenta naopak nízká, h
 \end{enumerate}
 
 Tomuto ovšem musí předcházet tvorba celého testu a příslušného modelu znalostí. Po proběhnutí mnoha případů testování lze na základě analýzy informací získaných o jejich průběhu model vylepšit.
+%
+% \section{Části adaptivního modelu}
+% Pro adaptivní testování je nutno
+% \begin{itemize}
+% 	\item samotného obsahu testu, tedy
+% \end{itemize}
+
 
 % -------------------------------------------------
+
 \chapter{Znalostní model (Bayesovské sítě)}
-Pro výběr otázek v rámci našeho přístupu k adaptivnímu testování se používá bayesovských sítí. Jedná se o grafický model (ve smyslu teorie grafů) popisující vztahy mezi náhodnými veličinami pomocí podmíněných pravděpodobnostních rozdělení.
+Pro modelování znalostí studenta v rámci přístupu k adaptivnímu testování použitému v této práci se používá bayesovských sítí. Jedná se o grafický model popisující vztahy mezi náhodnými veličinami pomocí podmíněných pravděpodobnostních rozdělení.
 
 \section{Formální definice}
 Bayesovskou síť pro naše účely můžeme definovat formálně jako uspořádanou dvojici orientovaného acyklického grafu $B_S = (V,E)$ (tzv. struktura sítě), kde každému prvku $i \in V$ odpovídá náhodná veličina $X_i$, a množiny $B_P$  funkcí $P(X_i\,|\,(X_j)_{j\in pa(i)})$, které udávají podmíněné pravděpodobnostní rozdělení $X_i$ v závislosti na hodnotě veličin odpovídajících (přímým) předchůdcům $i$ v $B_S$ značeným jako $pa(i)$. Množinu všech náhodných veličin budu značit $X=\{X_i\,|\,i \in V\}$.
@@ -306,13 +316,13 @@ V \cite{almond_tlustospis} je hned v úvodu jako příklad uvedena síť na obr�
   \label{fig:almond_BN_example}
 \end{figure}
 
-Pro představu o topologii sítí, které ve svém výzkumu používal vedoucí práce, lze také použít přímo jednu z nich. Na obrázku \ref{fig:plajner16} zelené uzly reprezentují jednotlivé dovednosti a žluté uzly otázky. Uzel \emph{S8} (celková dovednost, konkrétně znalost jednoduchých funkcí) je předchůdcem všech uzlů, následují ostatní zelené uzly (jednotlivé prvky celkové dovednosti: znalost polynomů, exponenciálních funkcí a tak dále) a na konec žluté uzly, které reprezentují jednotlivé úlohy v testu.
+Pro představu o topologii sítí, které ve svém výzkumu používal vedoucí práce, lze také použít přímo jednu z nich. Na obrázku \ref{fig:complex_BN_plajner16} zelené uzly reprezentují jednotlivé dovednosti a žluté uzly otázky. Uzel \emph{S8} (celková dovednost, konkrétně znalost jednoduchých funkcí) je předchůdcem všech uzlů, následují ostatní zelené uzly (jednotlivé prvky celkové dovednosti: znalost polynomů, exponenciálních funkcí a tak dále) a na konec žluté uzly, které reprezentují jednotlivé úlohy v testu.
 
 \begin{figure}
   \centering
     \includegraphics[width=0.85\textwidth]{complex_BN_plajner16.pdf}
   \caption{Příklad bayesovské síťě z \cite{plajner16}.}
-  \label{fig:plajner16}
+  \label{fig:complex_BN_plajner16}
 \end{figure}
 
 \section{Dovednosti a otázky}
@@ -320,9 +330,12 @@ Množina všech náhodných veličin $X$ se ve zde blíže probíraných přípa
 
 Vyhodnocení adaptivního testu bude znamenat na základě získaných dat vypočítat pravděpodobnostní rozdělení veličin z $S$.
 
-\section{Aktualizace modelu v průběhu testování}
-Informace získané v průběhu testování se do modelu vkládají tak, že se apriorní rozdělení veličiny z $Q$ nahradí formálně rozdělením, kde je jeden ze stavů již jistý (tedy vektor pravděpodobnostní stavů je pak vektor obsahující jeden prvek s hodnotou 1 a všechny ostatní s hodnotou 0). Toto umožní aktualizaci rozdělení ostatních veličin jak z $S$, tak z $Q$, jejichž stav není v daném okamžiku ještě známý.
+Množinu $Q$ ještě budeme někdy dělit na další 2 disjunktní podmnožiny $Q = \widehat{Q} \cup \overline{Q}$, kde $\widehat{Q}$ je množina dosud nezodovězených otázek a $\overline{Q}$ již zodpovězených.
 
+\section{Aktualizace modelu v průběhu testování}
+Informace získané v průběhu testování se do modelu vkládají tak, že se apriorní rozdělení veličiny z $Q$ nahradí formálně rozdělením, kde je jeden ze stavů již jistý (tedy vektor pravděpodobnostní stavů je pak vektor obsahující jeden prvek s hodnotou 1 a všechny ostatní s hodnotou 0). Toto umožní aktualizaci rozdělení ostatních veličin jak z $S$, tak z $\widehat{Q}$.
+
+Formálně budu psát, že nějaká $X_i \in \overline{Q}$ nabývá hodnoty $x_i \in \mathbb{X}_i$ jako $X_i = x_i$. Případně k rozlišení nahradím $X_i$ za $S_i$ nebo $\mathbb{X}_i$ za $\mathbb{Q}_i$ a podobně.
 
 % --------------------------------------
 
@@ -344,20 +357,63 @@ Struktura sítě byla vždy pro daný srovnávaný model pevná a tabulky podmí
 
 Modely autoři konkrétně porovnávaly na základě míry úspěšnosti odhadu hodnocení zatím v simulaci neřešených úloh na základě úloh již v dané simulaci vyřešených a vyhodnocených, to celé v závislosti na počtu vyřešených úloh (počtu odsimulovaných kroků testování).
 
-Jako kritérium výběru úlohy v simulacích autoři použili maximalizaci očekávaného informačního zisku (neboli poklesu entropie) stavu dovedností po vyhodnocení kandidátní úlohy.
+Jako kritérium výběru úlohy v simulacích autoři použili maximalizaci středního informačního zisku (neboli poklesu entropie) stavu dovedností po vyhodnocení kandidátní úlohy. (Podrobně rozebráno v kapitole \ref{chap:question_selection}.)
 
-\section{Závěr}
+\section{Vyhodnocení}
 Autoři došli k tomu, že příliš jednoduché modely si nevedly dobře -- ukázalo se jako výhodné uvažovat raději 3 než pouze 2 stavy u dovednostních veličin.
 
 Zahrnutí osobních údajů o studentovi do modelu vylepšilo úspěšnost předpovědí jen v počátečních krocích testování, poté měly pouze malý pozitivní, nebo dokonce negativní efekt.
 
 Složitější z modelů pravděpodobně postihl tak zvaný over-fitting, to jest naučené tabulky podmíněných pravděpodobností nezobecňovaly dobře vztahy z učící množiny pro testovací množinu, takže si nakonec nevedly dobře.
 
-V jejich novějším článku \cite{plajner16} používají autoři mj. síť na obrázku \ref{fig:plajner16}, která se liší od té z \cite{vomlel_plajner2015} hlavně přidáním souhrné dovednostní veličiny jako předchůdce všech ostatních veličin. Tato síť měla hlavně ve spojení s jejich novým algoritmem pro učení z testovací množiny mnohem lepší úspěšnost předpovědí.
+V jejich novějším článku \cite{plajner16} používají autoři mj. síť na obrázku \ref{fig:complex_BN_plajner16}, která se liší od té z \cite{vomlel_plajner2015} hlavně přidáním souhrné dovednostní veličiny jako předchůdce všech ostatních veličin. Tato síť měla hlavně ve spojení s jejich novým algoritmem pro učení z testovací množiny mnohem lepší úspěšnost předpovědí.
 
-% TODO: link comparison chart figure form plajner16
+\begin{figure}
+  \centering
+    \includegraphics[width=0.85\textwidth]{comparison_chart_plajner16.pdf}
+  \caption{Srovnání úspěšnosti znalostních modelů z \cite{plajner16}. Modely \texttt{expert\_old(\_glm)} jsou modely se strukturou bez uzlu celkové dovednosti, \texttt{expert\_new(\_glm)} jsou modely s ní. Přípona \texttt{\_glm} značí jinou metodu učení tabulek podmíněných pravděpodobností.}
+  \label{fig:comparison_chart_plajner16}
+\end{figure}
+
+% -------------------------------------
+
+\chapter{Strategie výběru otázek}
+\label{chap:question_selection}
+Na základě znalostního modelu se mohou v průběhu adaptivního testování vybírat otázky k zobrazení studentovi dle různých kritérií. Uvedu zde příklady jednoduchých \uv{hladových} stragií srovnávaných v \cite{question_selection} určených pro bayesovské modely znalostí a poté nastíním i možné jiné, komplikovanější, strategie.
+
+Nechť již zodpovězené otázky nabývají hodnot $e=\{Q_i=q_i|Q_i\in\overline{Q}\}$, pak lze vybrat otázku na příklad následujícími způsoby.
+
+\section{Maximalizace středního informačního zisku}
+Toto kritérium je motivováno tím, že jako výsledek testu chceme co nejvíce snížit nejistotu ve stavech $S_i \in S$. Hledáme tedy otázku $\widehat{Q}^*_i \in \widehat{Q}$, jejíž vyhodnocení tuto nejistotu co nejvíce sníží ve smyslu střední hodnoty dle pravděpodobnosti odpovědí na ní. Nejistotu zde měříme pomocí Shannonovy entropie, konkrétně:
+
+\begin{equation}
+	H(e) = -\sum_{S_i \in S}\sum_{s_i \in \mathbb{S}_i}P(S_i=s_i|e) \log{}P(S_i=s_i|e),
+\end{equation}
+
+po zodpovězení uvažované otázky $\widehat{Q}_i \in \widehat{Q}$ a jejím vyhodnocení na stav $\widehat{Q}_i = \widehat{q}_i$ tedy:
+
+\begin{equation}
+	H(e, \widehat{Q}_i = \widehat{q}_i) = -\sum_{S_i \in S}\sum_{s_i \in \mathbb{S}_i}P(S_i=s_i|e, \widehat{Q}_i = \widehat{q}_i) \log{}P(S_i=s_i|e, \widehat{Q}_i = \widehat{q}_i).
+\end{equation}
+
+Střední hodnota entropie na dovednostech po nějaké odpovědi na $\widehat{Q}_i$ bude tedy:
+
+\begin{equation}
+	EH(\widehat{Q}_i,e) = \sum_{\widehat{q}_i \in \widehat{\mathbb{Q}}_i}P(\widehat{Q}_i = \widehat{q}_i|e) H(e, \widehat{Q}_i = \widehat{q}_i).
+\end{equation}
+
+Při tomto značení toto kritérium vybírá otázku $\widehat{Q}^*_i$ jako:
+
+\begin{equation}
+	\widehat{Q}^*_i = \argmax_{\widehat{Q}_i \in \widehat{Q}} H(e) - EH(\widehat{Q}_i,e).
+\end{equation}
+
+\section{Maximalizace středního rozptylu stavů dovedností}
 
 
+
+
+% -------------------------------------
 
 \chapter*{Závěr} % SEM NESAHEJTE!
 \addcontentsline{toc}{chapter}{Závěr} % SEM NESAHEJTE!
@@ -374,13 +430,20 @@ Zde napište text úvodu (1-3 strany, nerozdělujte na podkapitoly) nebo jej vlo
 \begin{thebibliography}{99}
 	% formát: ČSN ISO 690. Můžete si to vygenerovat na http://www.citacepro.com (přihlaste se přes odkaz "ČVUT"), umí to vygenerovat TeX
 	% řazení: abecedně podle autora (resp. prvního slova, není-li znám autor)
-	\bibitem{almond_tlustospis} Almond, R.G., Mislevy, R.J., Steinberg, L., Yan, D., Williamson, D. \textit{Bayesian Networks in Educational Assessment.} Springer, 2015.
-	\bibitem{vomlel_obec} Vomlel, J. \textit{Bayesian networks in educational testing.} International Journal of Uncertainty, Fuzziness and Knowledge Based Systems. Vol. 12, Supplementary Issue 1, 2004, pp. 83-100.
-  \bibitem{vomlel_building} Vomlel, J. \textit{Building Adaptive Tests using Bayesian networks.} Kybernetika. Volume 40, Number 3, 2004, pp. 333 - 348.
-	\bibitem{plajner16} Plajner, M., J. Vomlel. \textit{Student Skill Models in Adaptive Testing.} Proceedings of the Eighth International Conference on Probabilistic Graphical Models, pp. 403–414, 2016.
+	\bibitem{almond_tlustospis} ALMOND, R.G., MISLEVY, R.J., STEINBERG, L., YAN, D., WILLIAMSON, D. \textit{Bayesian Networks in Educational Assessment.} Springer, 2015.
 
+	\bibitem{vomlel_obec} VOMLEL, Jiří \textit{Bayesian networks in educational testing.} International Journal of Uncertainty, Fuzziness and Knowledge Based Systems. Vol. 12, Supplementary Issue 1, 2004, pp. 83-100.
+
+	\bibitem{vomlel_building} VOMLEL, Jiří \textit{Building Adaptive Tests using Bayesian networks.} Kybernetika. Volume 40, Number 3, 2004, pp. 333 - 348.
+
+	\bibitem{plajner16} PLAJNER, Martin, Jiří VOMLEL. \textit{Student Skill Models in Adaptive Testing.} Proceedings of the Eighth International Conference on Probabilistic Graphical Models, pp. 403–414, 2016.
+% ------------------------
 	\bibitem{Wainer2000} WAINER, Howard. a Neil J. DORANS. \textit{Computerized adaptive testing: a primer}. 2nd ed. Mahwah, N.J.: Lawrence Erlbaum Associates, 2000. ISBN 08-058-3511-3.
-	\bibitem{vomlel_plajner2015} Plajner, M., J. Vomlel. \textit{Bayesian network models for adaptive testing.} Proceedings of the Twelfth UAI Conference on Bayesian Modeling Applications Workshop-Volume 1565. CEUR-WS. org, 2015. p. 24-33.
+
+	\bibitem{vomlel_plajner2015} PLAJNER, Martin, Jiří VOMLEL. \textit{Bayesian network models for adaptive testing.} Proceedings of the Twelfth UAI Conference on Bayesian Modeling Applications Workshop-Volume 1565. CEUR-WS. org, 2015. p. 24-33.
+
+	\bibitem{question_selection} PLAJNER, Martin, Amal MAGAUINA a Jiří VOMLEL. \textit{Question Selection Methods for Adaptive Testing with Bayesian Networks}. Ústav teorie informace a automatizace, Akademie věd České republiky, 2017.
+
 \end{thebibliography}
 
 
