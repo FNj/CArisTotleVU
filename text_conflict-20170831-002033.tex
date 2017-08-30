@@ -332,7 +332,7 @@ V \cite{almond_tlustospis} je hned v úvodu jako příklad uvedena síť na obr�
   \label{fig:almond_BN_example}
 \end{figure}
 
-Další příklad jsem vybral z \cite{plajner16}. Na obrázku \ref{fig:complex_BN_plajner16} zelené uzly reprezentují jednotlivé dovednosti a žluté uzly otázky. Uzel \emph{S8} (celková dovednost, konkrétně znalost jednoduchých funkcí) je předchůdcem všech uzlů, následují ostatní zelené uzly (jednotlivé prvky celkové dovednosti: znalost polynomů, exponenciálních funkcí a tak dále) a na konec žluté uzly, které reprezentují jednotlivé úlohy v testu.
+Pro představu o topologii sítí, které ve svém výzkumu používal vedoucí práce, lze také použít přímo jednu z nich. Na obrázku \ref{fig:complex_BN_plajner16} zelené uzly reprezentují jednotlivé dovednosti a žluté uzly otázky. Uzel \emph{S8} (celková dovednost, konkrétně znalost jednoduchých funkcí) je předchůdcem všech uzlů, následují ostatní zelené uzly (jednotlivé prvky celkové dovednosti: znalost polynomů, exponenciálních funkcí a tak dále) a na konec žluté uzly, které reprezentují jednotlivé úlohy v testu.
 
 \begin{figure}
   \centering
@@ -463,12 +463,12 @@ Zatím uvedené strategie jsou \uv{hladové}, konkrétně uvažují vždy jen je
 
 % -------------------------------------
 \chapter{Popis aplikace}
-V této kapitole popíši samotnou aplikaci, kterou jsem v rámci výzkumného úkolu vyvíjel. Moje aplikace tvoří uživatelské rozhraní pro knihovnu vyvíjenou na Ústavu teorie informace a automatizace AV ČR, která zajišťuje ve zde rozebírané webové aplikaci samotné výpočty na příslušné bayesovské síti, zvané \textit{Computerized Adaptive Testing Generic Framework} (dále jen \texttt{catest}).
+V této kapitole popíši samotnou aplikaci, kterou jsem v rámci výzkumného úkolu vyvíjel. Moje aplikace tvoří uživatelské rozhraní pro knihovnu vyvíjenou na Ústavu teorie informace a automatizace AV ČR, která zajišťuje ve zde rozebírané webové aplikaci samotné výpočty na příslušné bayesovské síti, zvané \uv{Computerized Adaptive Testing Generic Framework} (dále jen \texttt{catest}).
 
-\section{Výběr nástroje}
-Vedoucí práce mi navrhl, abych použil systém \textit{R Shiny} \cite{r_shiny}, a to hlavně kvůli tomu, že je to vlastně knihovna psaná v jazyce R, ve kterém je psaná i knihovna \texttt{catest}. Tento systém je ovšem spíše cílen na různé datově analytické výstupy spíše než na obecnější webové aplikace, také mám opravdu jen malé zkušenosti s programovacím jazykem R, ve kterém je tento systém napsaný.
+\section{Výběr nástoje}
+Vedoucí práce mi navrhl, abych použil systém R Shiny \cite{r_shiny}, a to hlavně kvůli tomu, že je to vlastně knihovna psaná v jazyce R, ve kterém je psaná i knihovna \texttt{catest}. Tento systém je ovšem spíše cílen na různé datově analytické výstupy spíše než na obecnější webové aplikace, také mám opravdu jen malé zkušenosti s programovacím jazykem R, ve kterém je tento systém napsaný.
 
-Raději jsem tedy zůstal u Pythonu, se kterým mám jak ze školního, tak profesionálního prostředí asi největší zkušenosti ze všech programovacích jazyků. Konkrétně jsem jako jádro aplikace použil \uv{microframework} (jednoduchý aplikační rámec) \textit{Flask} \cite{flask}.
+Raději jsem tedy zůstal u Pythonu, se kterým mám jak ze školního, tak profesionálního prostředí asi největší zkušenosti ze všech programovacích jazyků. Konkrétně jsem jako jádro aplikace použil \uv{microframework} (jednoduchý aplikační rámec)
 
 
 
@@ -503,8 +503,6 @@ Zde napište text úvodu (1-3 strany, nerozdělujte na podkapitoly) nebo jej vlo
 	\bibitem{question_selection} PLAJNER, Martin, Amal MAGAUINA a Jiří VOMLEL. \textit{Question Selection Methods for Adaptive Testing with Bayesian Networks}. Ústav teorie informace a automatizace, Akademie věd České republiky, 2017.
 
 	\bibitem{r_shiny} \textit{R Shiny} [online]. Boston: RStudio, 2017 [cit. 2017-08-30]. Dostupné z: https://shiny.rstudio.com/
-
-	\bibitem{flask} \textit{Flask: A python microframework} [online]. Pocoo Team, 2017 [cit. 2017-08-31]. Dostupné z: http://flask.pocoo.org/
 
 \end{thebibliography}
 
