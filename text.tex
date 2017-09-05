@@ -268,11 +268,11 @@ Zde napište text úvodu (1-3 strany, nerozdělujte na podkapitoly) nebo jej vlo
 Adaptivní počítačové testování je způsob získávání informací o znalostech studenta, při kterém se průběh testování mění na základě informací získaných v jeho průběhu (nebo i před jeho zahájením). V anglicky psané literatuře se pro toto používá označení computerized adaptive testing (CAT). Využití adaptivního testování umožňuje kombinovat výhody individuálního testování jako zvýšená přesnost a úspora času i námahy testovaného s možností hromadného testování. \cite{almond_tlustospis}%vypsat zde publikace ze kterých v sekci čerpám
 
 \subsection{Motivace}
-Hromadně aplikovaný test musí, aby fungoval dobře pro širokou škálu úrovní jednotlivých měřených dovedností, obsahovat otázky různé obtížnosti. Pokud by na příklad neobsahoval lehké otázky, nemohl by test přesně měřit nízkou úroveň příslušných dovedností.
+V \cite[strana~10]{Wainer2000} je uveden následující argument. Hromadně aplikovaný test musí, aby fungoval dobře pro širokou škálu úrovní jednotlivých měřených dovedností, obsahovat otázky různé obtížnosti. Pokud by na příklad neobsahoval lehké otázky, nemohl by test přesně měřit nízkou úroveň příslušných dovedností.
 
 Tento fakt ovšem znamená, že zdatný student ve statickém testu musí nejdříve odpovědět na mnoho pro něj jednoduchých otázek, než se dostane k otázkám, které mají nějakou vypovídací hodnotu o jeho dovednostech. Toto vede k mrhání času a námahy studenta, přináší to též do procesu testování nechtěné faktory jako chyby z nedbalosti způsobené nudou.
 
-V případě, že je úroveň měřených dovedností studenta naopak nízká, hrozí zase zmatek, frustrace a nekvalitní data, pokud slabý student správnou odpověď jen náhodou uhodne. \cite[strana~10]{Wainer2000}
+V případě, že je úroveň měřených dovedností studenta naopak nízká, hrozí zase zmatek, frustrace a nekvalitní data, pokud slabý student správnou odpověď jen náhodou uhodne.
 
  \subsection{Průběh adaptivního testování}
  Samotný průběh adaptivního testování sestává z opakování těchto kroků: \cite{plajner16}
@@ -299,9 +299,9 @@ Tomuto ovšem musí předcházet tvorba celého testu a příslušného modelu z
 Pro modelování znalostí studenta v rámci přístupu k adaptivnímu testování použitému v této práci (navrženému v \cite{almond_tlustospis}) se používá bayesovských sítí. Jedná se o pravděpodobnostní grafický model popisující vztahy mezi náhodnými veličinami pomocí rozdělení podmíněné pravděpodobnosti.
 
 \subsection{Formální definice}
-Bayesovskou síť pro naše účely můžeme definovat formálně jako uspořádanou dvojici orientovaného acyklického grafu $B_S = (V,E)$ (tzv. struktura sítě), kde každému prvku $i \in V$ odpovídá náhodná veličina $X_i$, a množiny $B_P$  funkcí $P(X_i\,|\,(X_j)_{j\in pa(i)})$, které udávají podmíněné pravděpodobnostní rozdělení $X_i$ v závislosti na hodnotě veličin odpovídajících (přímým) předchůdcům (neboli rodičům) $i$ v $B_S$ značeným jako $pa(i)$. (Toto značení je možná trochu zavádějící v případě uzlů bez předchůdců, tedy u nichž $pa(i) = \emptyset$, tam totiž vlastně nejde o podmíněné pravděpodobnosti, ale pravděpodobnosti nepodmíněné.) Množinu všech náhodných veličin budu značit $X=\{X_i\,|\,i \in V\}$.
+Bayesovskou síť pro naše účely můžeme definovat formálně jako uspořádanou dvojici orientovaného acyklického grafu $B_S = (V,E)$ (tzv. struktura sítě), kde každému prvku $i \in V$ odpovídá náhodná veličina $X_i$, a množiny $B_P$  funkcí $P(X_i\,|\,(X_j)_{j\in pa(i)})$, které udávají podmíněné pravděpodobnostní rozdělení $X_i$ v závislosti na hodnotě veličin odpovídajících (přímým) předchůdcům (neboli rodičům) $i$ v $B_S$ značeným jako $pa(i)$. (Toto značení je možná trochu zavádějící v případě uzlů bez předchůdců, tedy u nichž $pa(i) = \emptyset$, tam totiž vlastně nejde o podmíněné pravděpodobnosti, ale pravděpodobnosti nepodmíněné.) Množinu všech náhodných veličin budu značit $\mathcal{X}=\{X_i\,|\,i \in V\}$.
 
-V našem případě budou $X_i$ nabývat jen určitých diskrétních hodnot (stavů veličiny) z množin $\mathbb{X}_i$, takže si prvky $B_P$ můžeme také představovat jako funkce zobrazující vektor stavů předchůdců $i$ v $B_S$ na vektor pravděpodobností stavů $X_i$. Prakticky lze takovouto funkci zapsat jako tak zvanou tabulku podmíněných pravděpodobností. (Opět nemusí jít nutně o pravěpodobnosti podmíněné.)
+V dále uvažovaných případech budou $X_i$ nabývat jen určitých diskrétních hodnot (stavů veličiny) z množin $\mathbb{X}_i$, takže si prvky $B_P$ můžeme také představovat jako funkce zobrazující vektor stavů předchůdců $i$ v $B_S$ na vektor pravděpodobností stavů $X_i$. Prakticky lze takovouto funkci zapsat jako tak zvanou tabulku podmíněných pravděpodobností. (Opět nemusí jít nutně o pravěpodobnosti podmíněné.)
 
 \subsection{Neformální popis}
 Bayesovské sítě popisují kauzální vztahy mezi pozorovanými náhodnými veličinami. V našem případě půjde kauzální vztah mezi odpověďmi studenta na otázky v testu a jeho měřenými dovednostmi.
@@ -311,11 +311,13 @@ Teoreticky by bylo možné uvažovat všechny možné konjunkce stavů uvažovan
 	\label{eq:conjunctions_cardinality}
 	|\mathbb{X}| = \prod_{\mathbb{X}_i \in \{\mathbb{X}_i\,|\,i \in V\}} \left|\mathbb{X}_i\right|,
 \end{equation}
-což je v praktických případech (stačí již s řádově desítkami veličin) často astronomické číslo, protože minimální smysluplný počet možných stavů náhodné veličiny jsou 2, což znamená, že $\mathbb{X}$ bude vždy aspoň $2^{\left|X\right|}$.
+což je v praktických případech (stačí již s řádově desítkami veličin) často astronomické číslo, protože minimální smysluplný počet možných stavů náhodné veličiny jsou 2, což znamená, že $\mathbb{X}$ bude vždy aspoň $2^{\left|\mathcal{X}\right|}$.
 
-Toto je důvod, proč se uvažují jen určité možné kauzální vztahy mezi pozorovanými veličinami, konkrétně ty, jejichž přítomnost odhadl buď nějaký učící algoritmus na základě sesbíraných dat nebo expert na danou problematiku. Tyto vztahy jsou pak kvantifikovány (tedy jsou nějak konkrétně určeny funkce v $B_P$, nebo speciálně příslušné tabulky podmíněných pravděpodobností) opět buďto expertem nebo algoritmicky na základě dat. \cite[kapitola~9]{almond_tlustospis}
+Toto je důvod, proč se uvažují jen určité možné kauzální vztahy mezi pozorovanými veličinami, konkrétně ty, jejichž přítomnost odhadl buď učící algoritmus na základě sesbíraných dat nebo expert na danou problematiku.
 
-Třeba v případě popisovaném v sekci \ref{sec:test_design} autoři použili smíšený přístup: struktura sítě (tedy kvalitativní popis kauzálních vztahů) byla odhadnuta experty (samotnými autory) a samotné tabulky podmíněných pravděpodobností (kvantitativní popis) pak byly (naučeny) algoritmicky na základě sesbíraných dat.
+Tyto vztahy jsou pak kvantifikovány opět buďto expertem nebo algoritmicky na základě dat. Konkrétně jsou určeny funkce v $B_P$, tedy speciálně příslušné tabulky podmíněných pravděpodobností. Metody učení tabulek podmíněných pravděpodobností jsou popsány na příklad v \cite[kapitola~9]{almond_tlustospis}.
+
+Třeba v případě popisovaném v sekci \ref{sec:test_design} autoři použili smíšený přístup: struktura sítě (tedy kvalitativní popis kauzálních vztahů) byla odhadnuta experty (samotnými autory) a tabulky podmíněných pravděpodobností (kvantitativní popis) pak byly naučeny algoritmicky na základě sesbíraných dat.
 
 % Jeden z předpokladů pro běžné výpočty v bayesovských sítích je, že pro každou veličinu $X_i$ platí, že je podmíněně nezávislá na veličinách, které  \textbf{ne}jsou reprezentovány jejími potomky v síti, podmíněno znalostí stavu veličin reprezentovaných jejími předky v síti. Zkráceně: každá veličina je podmíněně nezávislá na svých nepotomcích podmíněno znalostí svých předků.
 
@@ -342,16 +344,16 @@ Další příklad jsem vybral z \cite{plajner16}. Na obrázku \ref{fig:complex_B
 \end{figure}
 
 \subsection{Dovednosti a otázky}
-Množina všech náhodných veličin $X$ se ve zde blíže probíraných případech bude typicky dělit na 2 disjunktní podmnožiny $S \cup Q = X$, kde $S$ je množina veličin představujících dovednosti a $Q$ otázky (je tomu tak v obou zmíněných příkladech a předpkládám to i ve své webové aplikaci). Dále ještě mohou být v bayesovské síti zastoupeny jako náhodné veličiny další informace o studentovi jako třeba věk, pohlaví nebo výsledky jiného testování.
+Množina všech náhodných veličin $\mathcal{X}$ se ve zde blíže probíraných případech bude typicky dělit na 2 disjunktní podmnožiny $\mathcal{S} \cup \mathcal{Q} = \mathcal{X}$, kde $\mathcal{S}$ je množina veličin představujících dovednosti a $\mathcal{Q}$ otázky (je tomu tak v obou zmíněných příkladech a předpkládám to i ve své webové aplikaci). Dále ještě mohou být v bayesovské síti zastoupeny jako náhodné veličiny další informace o studentovi jako třeba věk, pohlaví nebo výsledky jiného testování.
 
-Vyhodnocení adaptivního testu bude znamenat na základě získaných dat vypočítat pravděpodobnostní rozdělení veličin z $S$. (Toto lze studentovi prezentovat jako pravděpodobnosti dosažené úrovně jeho znalostí, případně možná přístupněji třeba pomocí určitého odvozeného skóre a podobně.)
+Vyhodnocení adaptivního testu bude v následujícím textu znamenat určení pravděpodobnostní rozdělení veličin z $\mathcal{S}$ na základě získaných dat. (Toto lze studentovi prezentovat jako pravděpodobnosti dosažené úrovně jeho znalostí, případně možná přístupněji třeba pomocí určitého odvozeného skóre a podobně.)
 
-Množinu $Q$ ještě budeme někdy dělit na další 2 disjunktní podmnožiny $Q = \widehat{Q} \cup \overline{Q}$, kde $\widehat{Q}$ je množina dosud nezodovězených otázek a $\overline{Q}$ již zodpovězených.
+Množinu $\mathcal{Q}$ ještě budeme někdy dělit na další 2 disjunktní podmnožiny $Q = \widehat{\mathcal{Q}} \cup \overline{\mathcal{Q}}$, kde $\widehat{\mathcal{Q}}$ je množina dosud nezodovězených otázek a $\overline{\mathcal{Q}}$ již zodpovězených.
 
 \subsection{Aktualizace modelu v průběhu testování}
-Informace získané v průběhu testování se do modelu vkládají tak, že se rozdělení veličiny z $Q$ na základě odpovědi na příslušnou otázku testu nahradí rozdělením, kde je jeden ze stavů již jistý (tedy vektor pravděpodobnostní stavů je pak vektor obsahující jeden prvek s hodnotou 1 a všechny ostatní s hodnotou 0). Toto umožní aktualizaci rozdělení ostatních veličin jak z $S$, tak z $\widehat{Q}$.
+Informace získané v průběhu testování se do modelu vkládají tak, že se rozdělení veličiny z $\mathcal{Q}$ na základě odpovědi na příslušnou otázku testu nahradí rozdělením, kde je jeden ze stavů již jistý (tedy vektor pravděpodobnostní stavů je pak vektor obsahující jeden prvek s hodnotou 1 a všechny ostatní s hodnotou 0). Toto umožní aktualizaci rozdělení ostatních veličin jak z $\mathcal{S}$, tak z $\widehat{\mathcal{Q}}$.
 
-Formálně budu psát, že nějaká $X_i \in \overline{Q}$ nabývá hodnoty $x_i \in \mathbb{X}_i$ jako $X_i = x_i$. Případně k rozlišení nahradím $X_i$ za $S_i$ nebo $\mathbb{X}_i$ za $\mathbb{Q}_i$ a podobně.
+Formálně budu psát, že nějaká $X_i \in \overline{\mathcal{Q}}$ nabývá hodnoty $x_i \in \mathbb{X}_i$ jako $X_i = x_i$. Případně k rozlišení nahradím $X_i$ za $S_i$ nebo $\mathbb{X}_i$ za $\mathbb{Q}_i$ a podobně.
 
 % --------------------------------------
 
@@ -360,7 +362,7 @@ Formálně budu psát, že nějaká $X_i \in \overline{Q}$ nabývá hodnoty $x_i
 Možností, jak navrhnout test je nespočet. Pro představu krátce shrnu jako příklad článek podrobně popisující návrhu testu, konkrétně \cite{vomlel_plajner2015}.
 
 \subsection{Návrh obsahu a sběr dat}
-Nejdříve autoři navrhli statický test, ten předložili malé skupině studentů. Na základě zpětné vazby pak vytvořili další, pro studenty srozumitelnšjší, návrh, ze kterého byly také odebrány otázky, které se ukázaly neefektivní pro zisk informací.
+Nejdříve autoři navrhli statický test, ten předložili malé skupině studentů. Na základě zpětné vazby studentů pak vytvořili další, pro studenty srozumitelnšjší, návrh, ze kterého byly také odebrány otázky, které se ukázaly neefektivní pro zisk informací.
 
 Test nakonec obsahoval 29 úloh, které se dále rozdělily celkem na 53 podúloh. Úlohy byly alternativně vyhodnocovány pomocí bodového ohodnocení, nebo jen jako správně či špatně vypracované.
 
@@ -370,9 +372,9 @@ Sběru dat se celkem zúčastnilo 281 studentů. O těchto studentech si autoři
 \subsection{Srovnání znalostních modelů}
 V článku autoři porovnali celkem 14 různých modelů, které se lišily mj. počtem uvažovaných stavů náhodných veličin, počtem měřených dovedností a zahrnutím osobních dat studentů.
 
-Struktura sítě byla vždy pro daný srovnávaný model pevná (navržená na základě předpokladů autorů článku o příslušných kauzálních vztazích) a tabulky podmínených pravděpodobností se vždy v rámci desetinásobné křížové validace odhadly (naučily) na základě $\nicefrac{9}{10}$ náhodně vybraných případů (učící množiny). Jednotlivé modely pak byly porovnávány na základě chování modelu v simulacích na zbývající $\nicefrac{1}{10}$ případů (testovací množině).
+Struktura sítě byla vždy pro daný srovnávaný model pevná (navržená na základě předpokladů autorů článku o příslušných kauzálních vztazích). Tabulky podmínených pravděpodobností se vždy v rámci desetinásobné křížové validace odhadly (naučily) na základě $\nicefrac{9}{10}$ náhodně vybraných případů (učící množiny). Jednotlivé modely pak byly porovnávány na základě chování modelu v simulacích na zbývající $\nicefrac{1}{10}$ případů (testovací množině).
 
-Modely autoři konkrétně porovnávali na základě míry úspěšnosti odhadu hodnocení zatím v simulaci neřešených úloh na základě úloh již v dané simulaci vyřešených a vyhodnocených, to celé v závislosti na počtu vyřešených úloh (počtu odsimulovaných kroků testování). Za odhad se bralo nejpravděpodobnější vyhodnocení dané zatím neřešené úlohy v danému kroku testu.
+Modely autoři konkrétně porovnávali na základě míry úspěšnosti odhadu hodnocení zatím v simulaci neřešených úloh na základě úloh již v dané simulaci vyřešených a vyhodnocených, to celé v závislosti na počtu vyřešených úloh (počtu odsimulovaných kroků testování). Za odhad se bral nejpravděpodobnější stav dané zatím neřešené úlohy v danému kroku testu.
 
 Jako kritérium výběru úlohy v simulacích autoři použili maximalizaci středního informačního zisku (neboli poklesu entropie) stavu dovedností po vyhodnocení kandidátní úlohy. (Podrobně rozebráno v podsekci \ref{subsec:information_gain}.)
 
@@ -398,59 +400,61 @@ V jejich novějším článku \cite{plajner16} používají autoři mj. síť na
 \label{sec:question_selection}
 Na základě znalostního modelu se mohou v průběhu adaptivního testování vybírat otázky k zobrazení studentovi dle různých kritérií. Uvedu zde příklady jednoduchých \uv{hladových} stragií srovnávaných v \cite{question_selection} určených pro bayesovské modely znalostí a poté nastíním i možné jiné, komplikovanější, strategie.
 
-Nechť již zodpovězené otázky nabývají hodnot $e=\{Q_i=q_i|Q_i\in\overline{Q}\}$, pak lze vybrat otázku na příklad následujícími způsoby.
+Nechť již zodpovězené otázky nabývají hodnot $e=\{Q_i=q_i|Q_i\in\overline{\mathcal{Q}}\}$, pak lze vybrat otázku na příklad následujícími způsoby.
 
 \subsection{Maximalizace středního informačního zisku}
 \label{subsec:information_gain}
-Toto kritérium je motivováno tím, že jako výsledek testu chceme co nejvíce snížit nejistotu ve stavech $S_i \in S$. Hledáme tedy otázku $\widehat{Q}^*_i \in \widehat{Q}$, jejíž vyhodnocení tuto nejistotu co nejvíce sníží ve smyslu střední hodnoty dle pravděpodobnosti odpovědí na ní. Nejistotu zde měříme pomocí Shannonovy entropie, konkrétně:
+Toto kritérium je motivováno tím, že jako výsledek testu chceme co nejvíce snížit nejistotu ve stavech $S_i \in S$. Hledáme tedy otázku $\widehat{Q}^*_i \in \widehat{\mathcal{Q}}$, jejíž vyhodnocení tuto nejistotu co nejvíce sníží ve smyslu střední hodnoty dle pravděpodobnosti odpovědí na ní. Nejistotu zde měříme pomocí Shannonovy entropie, konkrétně:
 \begin{equation}
-	H(e) = -\sum_{S_i \in S}\sum_{s_i \in \mathbb{S}_i}P(S_i=s_i|e) \log{}P(S_i=s_i|e),
+	H(e) = -\sum_{S_i \in \mathcal{S}}\sum_{s_i \in \mathbb{S}_i}P(S_i=s_i|e) \log{}P(S_i=s_i|e),
 \end{equation}
-po zodpovězení uvažované otázky $\widehat{Q}_i \in \widehat{Q}$ a jejím vyhodnocení na stav $\widehat{Q}_i = \widehat{q}_i$ tedy:
+po zodpovězení uvažované otázky $\widehat{Q}_i \in \widehat{\mathcal{Q}}$ a jejím vyhodnocení na stav $\widehat{Q}_i = \widehat{q}_i$ tedy:
 \begin{equation}
-	H(e, \widehat{Q}_i) = \widehat{q}_i) = -\sum_{S_i \in S}\sum_{s_i \in \mathbb{S}_i}P(S_i=s_i|e, \widehat{Q}_i = \widehat{q}_i) \log{}P(S_i=s_i|e, \widehat{Q}_i = \widehat{q}_i).
+	H(e, \widehat{Q}_i = \widehat{q}_i) = -\sum_{S_i \in \mathcal{S}}\sum_{s_i \in \mathbb{S}_i}P(S_i=s_i|e, \widehat{Q}_i = \widehat{q}_i) \log{}P(S_i=s_i|e, \widehat{Q}_i = \widehat{q}_i).
 \end{equation}
 
 Střední hodnota entropie na dovednostech po nějaké odpovědi na $\widehat{Q}_i$ bude tedy:
 \begin{equation}
-	EH(\widehat{Q}_i,e) = \sum_{\widehat{q}_i \in \widehat{\mathbb{Q}}_i}P(\widehat{Q}_i = \widehat{q}_i|e) H(e, \widehat{Q}_i = \widehat{q}_i).
+	EH(\widehat{Q}_i,e) = \sum_{\widehat{q}_i \in \widehat{\mathbb{\mathcal{Q}}}_i}P(\widehat{Q}_i = \widehat{q}_i|e) H(e, \widehat{Q}_i = \widehat{q}_i).
 \end{equation}
 
-Při tomto značení toto kritérium vybírá otázku $\widehat{Q}^*_i$ jako:
+Toto kritérium vybírá otázku $\widehat{Q}^*_i$ jako:
 \begin{equation}
-	\widehat{Q}^*_i = \argmax_{\widehat{Q}_i \in \widehat{Q}} H(e) - EH(\widehat{Q}_i,e).
+	\widehat{Q}^*_i = \argmax_{\widehat{Q}_i \in \widehat{\mathcal{Q}}} H(e) - EH(\widehat{Q}_i,e).
 \end{equation}
 
 \subsection{Maximalizace středního rozptylu stavů dovedností}
-Použití tohoto kritéria ve zde rozebrané podobě předpokládá, že veličiny dovedností $S_i$ jsou binární, tedy mohou nabývat pouze dvou hodnot. Konkrétně zde budou tyto hodnoty značeny jako $0$ v případě nesprávné odpovědi absence dovednosti a $1$ v případě, že student danou dovednost má.
+Použití tohoto kritéria ve zde rozebrané podobě předpokládá, že veličiny dovedností $S_i$ jsou binární, tedy mohou nabývat pouze dvou hodnot. Konkrétně zde budou tyto hodnoty značeny jako $0$ v případě absence dovednosti a $1$ v případě, že student danou dovednost má.
 
 Toto kritérium se snaží o dobrou separaci studentů na základě jejich dovedností. Konkrétně jde o tuto hodnotu:
 \begin{equation}
-	var(S|e, \widehat{Q}_i) = \sum_{S_i \in S}\sum_{\widehat{q}_i \in \widehat{\mathbb{Q}}_i} \left(P(S_i=1|e) - P(S_i=1|e, \widehat{Q}_i = \widehat{q}_i) \right)^2 P(\widehat{Q}_i = \widehat{q}_i|e).
+	var(\mathcal{S}|e, \widehat{Q}_i) = \sum_{S_i \in \mathcal{S}}\sum_{\widehat{q}_i \in \widehat{\mathbb{Q}}_i} \left(P(S_i=1|e) - P(S_i=1|e, \widehat{Q}_i = \widehat{q}_i) \right)^2 P(\widehat{Q}_i = \widehat{q}_i|e).
 \end{equation}
 
 Nakonec se analogicky jako u předchozího kritéria vybere $\widehat{Q}^*_i$ jako:
 \begin{equation}
-	\widehat{Q}^*_i = \argmax_{\widehat{Q}_i \in \widehat{Q}} var(S|e, \widehat{Q}_i).
+	\widehat{Q}^*_i = \argmax_{\widehat{Q}_i \in \widehat{\mathcal{Q}}} var(\mathcal{S}|e, \widehat{Q}_i).
 \end{equation}
 
 \subsection{Maximalizace středního rozptylu stavů otázek}
 Uvedená podoba tohoto kritéria vyžaduje, aby byly binární tentokrát veličiny otázek $Q_i$. Zcela analogicky:
 \begin{equation}
-	var(\widehat{Q}_i|e) = \sum_{s \in \mathbb{S}} \left(P(\widehat{Q}_i=1|e) - P(\widehat{Q}_i=1|e, s) \right)^2 P(s|e),
+	var(\widehat{Q}_i|e) = \sum_{s \in \mathbb{S}_{pa(i)}} \left(P(\widehat{Q}_i=1|e) - P(\widehat{Q}_i=1|e, s) \right)^2 P(s|e),
 \end{equation}
-kde $\mathbb{S}$ je množina možných konjunkcí stavů všech dovednostních veličin v $S$. $\widehat{Q}^*_i$ se vybere předvídatelně jako:
+kde $\mathbb{S}_{pa(i)}=\{S_j=s_j\,|\,j\in pa(i),\, s_j\in\mathbb{S}_j\}$ je množina všech možných konjunkcí stavů těch dovednostních veličin v $\mathcal{S}$, jejichž uzly jsou předchůdci uzlu $i$ dané otázky v síti. Stavy ostatních dovednostních veličin netřeba uvažovat, neboť jsou tak zvaně d-separované (koncept vysvětlen názorně třeba v \cite[strana 26 až 32]{Jensenc2007}).
+
+$\widehat{Q}^*_i$ se vybere předvídatelně jako:
 \begin{equation}
-	\widehat{Q}^*_i = \argmax_{\widehat{Q}_i \in \widehat{Q}} var(\widehat{Q}_i|e).
+	\widehat{Q}^*_i = \argmax_{\widehat{Q}_i \in \widehat{\mathcal{Q}}} var(\widehat{Q}_i|e).
 \end{equation}
 
-Vzhledem k tomu, že k výpočtu $var(\widehat{Q}_i|e)$ je třeba uvažovat všechny možné konjunkce stavů dovedností (jejichž počet by udával vzorec \ref{eq:conjunctions_cardinality}, kde by množina $\mathbb{X}$ byla nahrazena $\mathbb{S}$), není praktické toto kritérium v této podobě vyčíslovat, lze ovšem použít následující aproximaci:
+Pokud by k výpočtu $var(\widehat{Q}_i|e)$ bylo nutné uvažovat příliš mnoho konjunkcí stavů dovedností (jejichž počet by udával vzorec \ref{eq:conjunctions_cardinality}, kde by množina $\mathbb{X}$ byla nahrazena $\mathbb{S}_{pa(i)}$), bylo by možné použít následující aproximaci:
 \begin{equation}
-	var^*(\widehat{Q}_i|e) = \sum_{S_i \in S}\sum_{s_i \in \mathbb{S}_i} \left(P(\widehat{Q}_i=1|e) - P(\widehat{Q}_i=1|e, S_i = s_i) \right)^2 P(S_i = s_i|e).
+	var^*(\widehat{Q}_i|e) = \sum_{S_i \in \mathcal{S}_{pa(i)}}\sum_{s_i \in \mathbb{S}_i} \left(P(\widehat{Q}_i=1|e) - P(\widehat{Q}_i=1|e, S_i = s_i) \right)^2 P(S_i = s_i|e).
 \end{equation}
+Tato aproximace byla použita i pro dosažení výsledků na obrázku \ref{fig:question_selection_comparison}.
 
 \subsection{Srovnání a komplexnější strategie}
-Případ porovnání zmíněných metod výběru je na obrázku \ref{fig:question_selection_comparison}
 
 \begin{figure}
   \centering
@@ -459,18 +463,61 @@ Případ porovnání zmíněných metod výběru je na obrázku \ref{fig:questio
   \label{fig:question_selection_comparison}
 \end{figure}
 
-Zatím uvedené strategie jsou \uv{hladové}, konkrétně uvažují vždy jen jeden krok testu dopředu. Šlo by ovšem též simulovat všechny možné scénáře vývoje testu několik kroků dopředu, vyčíslit hodnoty maximalizovaného kritéria na konci těchto simulací a poté přiřadit každé kandidátní otázce $\widehat{Q}_i \in \widehat{Q}$ příslušnou střední hodnotu kritéria napříč scénáři, které by mohly následovat zodpovězení uvažované otázky. (Tento proces je podrobně rozebrán v \cite{vomlel_building} včetně praktických heuristik pro zrychlení výpočtů.)
+Případ porovnání zmíněných metod výběru je na obrázku \ref{fig:question_selection_comparison}. Srovnávané strategie jsou \uv{hladové}, konkrétně uvažují vždy jen jeden krok testu dopředu.
+
+Šlo by ovšem též simulovat všechny možné scénáře vývoje testu několik kroků dopředu, vyčíslit hodnoty maximalizovaného kritéria na konci těchto simulací a poté přiřadit každé kandidátní otázce $\widehat{Q}_i \in \widehat{\mathcal{Q}}$ příslušnou střední hodnotu kritéria napříč scénáři, které by mohly následovat zodpovězení uvažované otázky. Tento proces je podrobně rozebrán v \cite{vomlel_building} včetně praktických heuristik pro zrychlení výpočtů.
 
 % -------------------------------------
-\chapter{Popis aplikace}
-V této kapitole popíši samotnou aplikaci, kterou jsem v rámci výzkumného úkolu vyvíjel. Moje aplikace tvoří uživatelské rozhraní pro knihovnu vyvíjenou na Ústavu teorie informace a automatizace AV ČR, která zajišťuje ve zde rozebírané webové aplikaci samotné výpočty na příslušné bayesovské síti, zvané \textit{Computerized Adaptive Testing Generic Framework} (dále jen \texttt{catest}).
 
-\section{Výběr nástroje}
-Vedoucí práce mi navrhl, abych použil systém \textit{R Shiny} \cite{r_shiny}, a to hlavně kvůli tomu, že je to vlastně knihovna psaná v jazyce R, ve kterém je psaná i knihovna \texttt{catest}. Tento systém je ovšem spíše cílen na různé datově analytické výstupy spíše než na obecnější webové aplikace, také mám opravdu jen malé zkušenosti s programovacím jazykem R, ve kterém je tento systém napsaný.
+\chapter{Vyvíjený systém}
+V této kapitole je popsána samotná aplikace, kterou jsem v rámci výzkumného úkolu vyvíjel. Moje aplikace tvoří uživatelské rozhraní pro knihovnu vyvíjenou na Ústavu teorie informace a automatizace AV ČR, která zajišťuje ve zde rozebírané webové aplikaci samotné výpočty na příslušné bayesovské síti, zvané \textit{Computerized Adaptive Testing Generic Framework} (dále jen \texttt{catest}).
 
-Raději jsem tedy zůstal u Pythonu, se kterým mám jak ze školního, tak profesionálního prostředí asi největší zkušenosti ze všech programovacích jazyků. Konkrétně jsem jako jádro aplikace použil \uv{microframework} (jednoduchý aplikační rámec) \textit{Flask} \cite{flask}.
+\section{Výběr nástrojů}
+Vedoucí práce mě upozornil na systém \textit{R Shiny}. Jedná se o knihovnu psanou v jazyce \textit{R}, ve kterém je psaná i samotná knihovna \texttt{catest}. Já zase přišel s nápadem použít jako jádro aplikace \uv{microframework} (aplikační rámec) \textit{Flask} psaný v \textit{Pythonu}. \cite{R} \cite{r_shiny} \cite{python} \cite{flask}
+
+Systém \textit{R Shiny} je ovšem cílen na různé datově analytické výstupy spíše než na obecnější webové aplikace, také mám opravdu jen malé zkušenosti s programovacím jazykem \textit{R}, ve kterém je tento systém napsaný.
+
+Raději jsem tedy nakonec zůstal u \textit{Pythonu} a \textit{Flasku}, se kterým mám jak ze školního, tak profesionálního prostředí asi největší zkušenosti ze všech programovacích jazyků. Konkrétně jsem
+
+Protože takto používám kombinaci dvou různých programovacích jazyků, je nutné mít k dispozici nějaké rozhraní mezi nimi. Původně jsem uvažoval o úplně vlastním řešení, ale nakonec jsem našel knihovnu \textit{RPy2}, která mi tvorbu rozhraní velmi usnadnila. \cite{rpy2}
+
+Aplikace musí ukládat dlouhodobě informace o uživatelích, definicích adaptivního testu a průběhu jednotlivých případů testování. Tyto jsou ukládány do relační databáze pomocí knihovny \textit{SQLAlchemy}, konkrétně jsem při vývoji používal pro jeho jednoduchost nasazení databázový systém \textit{SQLite}, ten je ovšem asi nejsnáze nahraditelnou částí celého systému. \cite{sqlalchemy} \cite{sqlite}
+
+\section{Datový model}
+V této sekci je krátce popsán použitý datový model. Graficky je znázorněn na obrázku \ref{fig:data_model}. Jednotlivé uvedené entity jsou vlastně zároveň tabulky databázi a třídy objektů v samotném prostředí \textit{Pythonu} ve smyslu objektově relačního zobrazení (konceptem shrnutým třeba v \cite{ORM}).
+
+\begin{figure}
+  \centering
+    \includegraphics[width=0.75\textwidth]{data_model.pdf}
+  \caption{Diagram datového modelu použitého v aplikaci. Jednotlivé rámečky reprezentují příslušné tabulky (resp. entity, případně třídy) a šipky vztahy mezi nimi (reference pomocí cizích klíčů).}
+  \label{fig:data_model}
+\end{figure}
+
+Obecný význam entit (tabulek) a většiny jejich vlastností (sloupců) na obrázku \ref{fig:data_model} je asi zřejmý, ale raději zde dále alespoň zasadím do kontextu všechny tabulky.
+
+Tabulky \texttt{users}, \texttt{roles} a \texttt{roles\_users} slouží k zaznamenávání identit uživatelů. Kdyby existencí tabulky pro role nepředpokládala knihovna \textit{Flask-Security}, která zajišťuje v aplikaci správu identit, tak by se \texttt{roles}, samozřejmě tedy ani \texttt{roles\_users}, v modelu nevyskytla. % TODO: dát citaci na Flask-Security % TODO: zjednodušit formulaci
+
+Tabulka \texttt{tests} obsahuje informace o testu jako celku. Sloupec \texttt{net\_definition} obsahuje definici struktury sítě i tabulek podmíněných pravděpodobností ve formátu, který dokáže zpracovat knihovna \texttt{catest}. % TODO: odkázat na formát Hugin flat file (aplikace Hugin Researcher .net file)
+
+Tabulky \texttt{questions} a \texttt{question\_states} slouží k záznamu otázek daného testu a jejich možných stavů, analogicky lze popsat tabulky \texttt{skills} a \texttt{skill\_states} (měřené dovednosti a jejich stavy). Sloupec \texttt{name} u otázek a dovedností slouží k identifikaci příslušného uzlu ve struktuře sítě, sloupec \texttt{number} zase k identifikaci stavu v tabulkách podmíněných pravděpodobností. Tyto tabulky lze částečně generovat na základě \texttt{net\_definition}, ale \texttt{net\_definition} neobsahuje samotný text otázek, ani popis jejich stavů, takže ten musí doplnit zadavatel zvlášť. Hodnoty ve sloupcích \texttt{name} a \texttt{number} musí odpovídat pojmenování, resp. číslu stavu, daného uzlu v \texttt{net\_definition}.
+
+% TODO: proč created_at, updated_at : pro zpracování dat, proč closed_at - analýza dat, přehrávání dat, analýza délky řešení otázky apod.
+
+% \section{Struktura aplikace}
+% Schematicky je struktura zachycená na obrázku x.y. Jádro aplikace tvoří společně se základní konfigurací aplikace několik pohledových funkcí (dokumentace \textit{Flasku} je obecně uvádí jako \uv{view functions}), které definují, co se má na základě HTTP požadavku uživatele vykonat. Pro obsloužení většiny požadavků stačí, aby % TODO: obrázek
+
+% \section{Datový model}
+%
+% \section{Webové rozhraní a pracovní postupy}
+%
+% \subsection{Rozhraní a pracovní postup studenta}
+%
+% \subsection{Rozhraní a pracovní postup zadavatele}
+%
+% \section{Analýza výpočetní náročnosti aplikace}
 
 
+% ukázky volání?
 
 % -------------------------------------
 \chapter*{Závěr} % SEM NESAHEJTE!
@@ -495,23 +542,44 @@ Zde napište text úvodu (1-3 strany, nerozdělujte na podkapitoly) nebo jej vlo
 	\bibitem{vomlel_building} VOMLEL, Jiří \textit{Building Adaptive Tests using Bayesian networks.} Kybernetika. Volume 40, Number 3, 2004, pp. 333 - 348.
 
 	\bibitem{plajner16} PLAJNER, Martin, Jiří VOMLEL. \textit{Student Skill Models in Adaptive Testing.} Proceedings of the Eighth International Conference on Probabilistic Graphical Models, pp. 403–414, 2016.
+
 % ------------------------
+
+	\bibitem{Jensenc2007} JENSEN, Finn V. a Thomas D. NIELSEN. \textit{Bayesian networks and decision graphs}. 2nd ed. New York: Springer, c2007. ISBN 978-0-387-68282-2.
+
 	\bibitem{Wainer2000} WAINER, Howard. a Neil J. DORANS. \textit{Computerized adaptive testing: a primer}. 2nd ed. Mahwah, N.J.: Lawrence Erlbaum Associates, 2000. ISBN 08-058-3511-3.
 
 	\bibitem{vomlel_plajner2015} PLAJNER, Martin, Jiří VOMLEL. \textit{Bayesian network models for adaptive testing.} Proceedings of the Twelfth UAI Conference on Bayesian Modeling Applications Workshop-Volume 1565. CEUR-WS. org, 2015. p. 24-33.
 
 	\bibitem{question_selection} PLAJNER, Martin, Amal MAGAUINA a Jiří VOMLEL. \textit{Question Selection Methods for Adaptive Testing with Bayesian Networks}. Ústav teorie informace a automatizace, Akademie věd České republiky, 2017.
 
+% --------------------------------------
+
+	\bibitem{R} \textit{R: The R Project for Statistical Computing} [online]. Vídeň: The R Foundation for Statistical Computing, 2017 [cit. 2017-08-31]. Dostupné z: https://www.r-project.org/
+
+	\bibitem{python} \textit{Python} [online]. Beaverton: Python Software Foundation, 2017 [cit. 2017-08-31]. Dostupné z: https://www.python.org/
+
 	\bibitem{r_shiny} \textit{R Shiny} [online]. Boston: RStudio, 2017 [cit. 2017-08-30]. Dostupné z: https://shiny.rstudio.com/
 
 	\bibitem{flask} \textit{Flask: A python microframework} [online]. Pocoo Team, 2017 [cit. 2017-08-31]. Dostupné z: http://flask.pocoo.org/
+
+	\bibitem{rpy2} \textit{RPy2} [online]. Laurent Gautier et al., 2017 [cit. 2017-08-31]. Dostupné z: https://rpy2.readthedocs.io
+
+	\bibitem{sqlalchemy} \textit{SQLAlchemy: The database toolkit for Python} [online]. 2017 [cit. 2017-08-31]. Dostupné z: http://www.sqlalchemy.org/
+
+	\bibitem{sqlite} \textit{SQLite} [online]. 2017 [cit. 2017-08-31]. Dostupné z: https://www.sqlite.org
+
+% ---------------------------------------
+
+	\bibitem{ORM} Object-relational mapping. In: \textit{Wikipedia: the free encyclopedia} [online]. San Francisco (CA): Wikimedia Foundation, 2001- [cit. 2017-08-30]. Dostupné z: https://en.wikipedia.org/wiki/Object-relational\_mapping
+
 
 \end{thebibliography}
 
 
 %%%%%%%%%%%% PŘÍLOHY PRÁCE %%%%%%%%%%%%
 \newpage % SEM NESAHEJTE!
-\addcontentsline{toc}{section}{Přílohy} % SEM NESAHEJTE!
+\addcontentsline{toc}{chapter}{Přílohy} % SEM NESAHEJTE!
 \appendix % SEM NESAHEJTE!
 
 
