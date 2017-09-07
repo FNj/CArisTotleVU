@@ -28,7 +28,7 @@
 \usepackage{tabularx} % rozšířené možnosti tabulek
 %\usepackage{tabu} % jiný balík pro rozšířené možnosti tabulek
 
-\usepackage{listings}  % balíček vhodný pro ukázky zdrojového kódu v~textu práce/příloh. Nutno nastavit! http://ftp.cvut.cz/tex-archive/macros/latex/contrib/listings/listings.pdf
+% \usepackage{listings}  % balíček vhodný pro ukázky zdrojového kódu v~textu práce/příloh. Nutno nastavit! http://ftp.cvut.cz/tex-archive/macros/latex/contrib/listings/listings.pdf
 \usepackage{amsmath} % balíček pro pokročilou matematickou sazbu
 %\usepackage{color} % pro možnost barevného textu
 %\usepackage{fancybox} % umožňuje pokročilé rámečkování
@@ -37,6 +37,10 @@
 %\newindex{default}{idx}{ind}{Rejstřík} % zavádí rejstřík v případě použití balíku index
 \usepackage{amssymb}
 \usepackage[nice]{nicefrac}
+
+\usepackage{minted}
+\renewcommand{\listingscaption}{Ukázka kódu}
+\renewcommand{\listoflistingscaption}{Seznam ukázek kódu}
 
 \frenchspacing % za větou bude mezislovní mezera (v anglických textech je mezera za větou delší)
 \widowpenalty=1000 % "síla" zákazu vdov (= jeden řádek ze začátku odstavce na konci stránky)
@@ -441,7 +445,7 @@ Uvedená podoba tohoto kritéria vyžaduje, aby byly binární tentokrát velič
 \begin{equation}
 	var(\widehat{Q}_i|e) = \sum_{s \in \mathbb{S}_{pa(i)}} \left(P(\widehat{Q}_i=1|e) - P(\widehat{Q}_i=1|e, s) \right)^2 P(s|e),
 \end{equation}
-kde $\mathbb{S}_{pa(i)}=\{S_j=s_j\,|\,j\in pa(i),\, s_j\in\mathbb{S}_j\}$ je množina všech možných konjunkcí stavů těch dovednostních veličin v $\mathcal{S}$, jejichž uzly jsou předchůdci uzlu $i$ dané otázky v síti. Stavy ostatních dovednostních veličin netřeba uvažovat, neboť jsou tak zvaně d-separované (koncept vysvětlen názorně třeba v \cite[strana 26 až 32]{Jensenc2007}).
+kde $\mathbb{S}_{pa(i)}=\{S_j=s_j\,|\,j\in pa(i),\, s_j\in\mathbb{S}_j\}$ je množina všech možných konjunkcí stavů těch dovednostních veličin v $\mathcal{S}$, jejichž uzly jsou předchůdci uzlu $i$ dané otázky v síti. Stavy ostatních dovednostních veličin není třeba uvažovat, neboť jsou tak zvaně d-separované (koncept vysvětlen názorně třeba v \cite[strana 26 až 32]{Jensenc2007}).
 
 $\widehat{Q}^*_i$ se vybere předvídatelně jako:
 \begin{equation}
@@ -472,19 +476,21 @@ Případ porovnání zmíněných metod výběru je na obrázku \ref{fig:questio
 \chapter{Vyvíjený systém}
 V této kapitole je popsána samotná aplikace, kterou jsem v rámci výzkumného úkolu vyvíjel. Moje aplikace tvoří uživatelské rozhraní pro knihovnu vyvíjenou na Ústavu teorie informace a automatizace AV ČR, která zajišťuje ve zde rozebírané webové aplikaci samotné výpočty na příslušné bayesovské síti, zvané \textit{Computerized Adaptive Testing Generic Framework} (dále jen \texttt{catest}).
 
+Všechny cesty v souborovém systému v této kapitole jsou uvedeny relativně vůči kořenu složky \texttt{CArisTotle}. Doporučuji během čtení této kapitoly paralelně procházet kód v repozitáři na \url{https://github.com/FNj/CArisTotle}.
+
 \section{Výběr nástrojů}
-Vedoucí práce mě upozornil na systém \textit{R Shiny}. Jedná se o knihovnu psanou v jazyce \textit{R}, ve kterém je psaná i samotná knihovna \texttt{catest}. Já zase přišel s nápadem použít jako jádro aplikace \uv{microframework} (aplikační rámec) \textit{Flask} psaný v \textit{Pythonu}. \cite{R} \cite{r_shiny} \cite{python} \cite{flask}
+Vedoucí práce mě upozornil na systém \textit{R Shiny}  \cite{r_shiny}. Jedná se o knihovnu psanou v jazyce \textit{R} \cite{R}, ve kterém je psaná i samotná knihovna \texttt{catest}. Já zase přišel s nápadem použít jako jádro aplikace \uv{microframework} (aplikační rámec) \textit{Flask}  \cite{flask} psaný v \textit{Pythonu}  \cite{python}.
 
-Systém \textit{R Shiny} je ovšem cílen na různé datově analytické výstupy spíše než na obecnější webové aplikace, také mám opravdu jen malé zkušenosti s programovacím jazykem \textit{R}, ve kterém je tento systém napsaný.
+Systém \textit{R Shiny} je ovšem cílen na různé datově analytické výstupy spíše než na obecnější webové aplikace, také mám opravdu jen malé zkušenosti s programovacím jazykem \textit{R}, ve kterém je tento systém napsaný. Raději jsem tedy nakonec zůstal u \textit{Pythonu} a \textit{Flasku}, se kterým mám jak ze školního, tak profesionálního prostředí asi největší zkušenosti ze všech programovacích jazyků. \textit{Python} je také mnohem více uzpůsoben multiparadigmatickému programování (porovnáváno třeba v \cite{multiparadigm}).
 
-Raději jsem tedy nakonec zůstal u \textit{Pythonu} a \textit{Flasku}, se kterým mám jak ze školního, tak profesionálního prostředí asi největší zkušenosti ze všech programovacích jazyků. Konkrétně jsem
+Protože takto používám kombinaci dvou různých programovacích jazyků, je nutné mít k dispozici nějaké rozhraní mezi nimi. Původně jsem uvažoval o úplně vlastním řešení, ale nakonec jsem našel knihovnu \textit{RPy2} \cite{rpy2}, která mi tvorbu rozhraní velmi usnadnila.
 
-Protože takto používám kombinaci dvou různých programovacích jazyků, je nutné mít k dispozici nějaké rozhraní mezi nimi. Původně jsem uvažoval o úplně vlastním řešení, ale nakonec jsem našel knihovnu \textit{RPy2}, která mi tvorbu rozhraní velmi usnadnila. \cite{rpy2}
+Aplikace musí ukládat dlouhodobě informace o uživatelích, definicích adaptivního testu a průběhu jednotlivých případů testování. Tyto jsou ukládány do relační databáze pomocí knihovny \textit{SQLAlchemy} \cite{sqlalchemy}, konkrétně jsem při vývoji používal pro jeho jednoduchost nasazení databázový systém \textit{SQLite} \cite{sqlite}, ten je ovšem asi nejsnáze nahraditelnou částí celého systému -- stačilo by mírně změnit nastavení v souboru \texttt{config.py}.
 
-Aplikace musí ukládat dlouhodobě informace o uživatelích, definicích adaptivního testu a průběhu jednotlivých případů testování. Tyto jsou ukládány do relační databáze pomocí knihovny \textit{SQLAlchemy}, konkrétně jsem při vývoji používal pro jeho jednoduchost nasazení databázový systém \textit{SQLite}, ten je ovšem asi nejsnáze nahraditelnou částí celého systému. \cite{sqlalchemy} \cite{sqlite}
+Pro lokalizaci (překlad) tam jsem použil knihovnu \textit{Babel} \cite{babel}. Překlad je použit jen tam, kde to bylo vhodné kvůli použití nějaké externí knihovny, co to předpokládala.
 
 \section{Datový model}
-V této sekci je krátce popsán použitý datový model. Graficky je znázorněn na obrázku \ref{fig:data_model}. Jednotlivé uvedené entity jsou vlastně zároveň tabulky databázi a třídy objektů v samotném prostředí \textit{Pythonu} ve smyslu objektově relačního zobrazení (konceptem shrnutým třeba v \cite{ORM}).
+V této sekci je krátce popsán použitý datový model. Graficky je znázorněn na obrázku \ref{fig:data_model}. Jednotlivé uvedené entity jsou vlastně zároveň tabulky databázi a třídy objektů v samotném prostředí \textit{Pythonu} ve smyslu objektově relačního zobrazení (konceptem shrnutým třeba v \cite{ORM}). Datový model je deklarován v modulu \texttt{datamodel}, konkrétně v souboru \texttt{/datamodel/model.py}.
 
 \begin{figure}
   \centering
@@ -495,13 +501,130 @@ V této sekci je krátce popsán použitý datový model. Graficky je znázorně
 
 Obecný význam entit (tabulek) a většiny jejich vlastností (sloupců) na obrázku \ref{fig:data_model} je asi zřejmý, ale raději zde dále alespoň zasadím do kontextu všechny tabulky.
 
-Tabulky \texttt{users}, \texttt{roles} a \texttt{roles\_users} slouží k zaznamenávání identit uživatelů. Kdyby existencí tabulky pro role nepředpokládala knihovna \textit{Flask-Security}, která zajišťuje v aplikaci správu identit, tak by se \texttt{roles}, samozřejmě tedy ani \texttt{roles\_users}, v modelu nevyskytla. % TODO: dát citaci na Flask-Security % TODO: zjednodušit formulaci
+Tabulky \texttt{users}, \texttt{roles} a \texttt{roles\_users} zaznamenávají identity uživatelů. Existenci tabulky pro role předpokládá knihovna \textit{Flask-Security}, která zajišťuje v aplikaci správu identit. Kdyby tomu tak nebylo, tabulka \texttt{roles} ani \texttt{roles\_users}, by se v modelu nevyskytla. \cite{Flask-Security}
 
-Tabulka \texttt{tests} obsahuje informace o testu jako celku. Sloupec \texttt{net\_definition} obsahuje definici struktury sítě i tabulek podmíněných pravděpodobností ve formátu, který dokáže zpracovat knihovna \texttt{catest}. % TODO: odkázat na formát Hugin flat file (aplikace Hugin Researcher .net file)
+Tabulka \texttt{tests} obsahuje informace o testu jako celku. Sloupec \texttt{net\_definition} obsahuje definici struktury sítě i tabulek podmíněných pravděpodobností ve formátu, který dokáže zpracovat knihovna \texttt{catest}. Konkrétně jde o textový formát, který pro ukládání používá aplikace \textit{Hugin Researcher} \cite{hugin}. Sloupec \texttt{stop\_max\_entropy} udává požadovanou úroveň (Shannonovy) entropie stavů dovedností v bitech, konkrétně počítané jako suma napříč dovednostmi:
+\begin{equation}
+	H(e) = -\sum_{S_i \in \mathcal{S}}\sum_{s_i \in \mathbb{S}_i}P(S_i=s_i|e) \log_2 P(S_i=s_i|e).
+\end{equation}
 
 Tabulky \texttt{questions} a \texttt{question\_states} slouží k záznamu otázek daného testu a jejich možných stavů, analogicky lze popsat tabulky \texttt{skills} a \texttt{skill\_states} (měřené dovednosti a jejich stavy). Sloupec \texttt{name} u otázek a dovedností slouží k identifikaci příslušného uzlu ve struktuře sítě, sloupec \texttt{number} zase k identifikaci stavu v tabulkách podmíněných pravděpodobností. Tyto tabulky lze částečně generovat na základě \texttt{net\_definition}, ale \texttt{net\_definition} neobsahuje samotný text otázek, ani popis jejich stavů, takže ten musí doplnit zadavatel zvlášť. Hodnoty ve sloupcích \texttt{name} a \texttt{number} musí odpovídat pojmenování, resp. číslu stavu, daného uzlu v \texttt{net\_definition}.
 
-% TODO: proč created_at, updated_at : pro zpracování dat, proč closed_at - analýza dat, přehrávání dat, analýza délky řešení otázky apod.
+V tabulce \texttt{possible\_answers} se nacházejí možné odpovědi na otázky (které pak vedou na určítý stav otázky). Tabulka \texttt{test\_instances} uchovává informace o jednotlivých případech testů a tabulka \texttt{answers} samotné odpovědi studenta na položené otázky.
+
+Všechny tabulky obsahují sloupce \texttt{created\_at} a \texttt{updated\_at}, které uchovávají datum a čas vytvoření daného řádku v tabulce, resp. jeho poslední změny. Tabulky \texttt{test\_instances} a \texttt{answers} navíc obsahují sloupec \texttt{closed\_at}, který udává časovou značku uzavření daného případu testu nebo odpovědi. Tyto záznamy jsou užitečné pro kopírování záznamů do jiných databází: vždy stačí kopírovat jen záznamy, které vznikly nebo byly změněny po času posledního kopírování. Tyto časové údaje mohou také být užitečné pro analýzu dat, třeba pro odhad doby řešení otázek apod.
+
+Při deklaraci datového modelu jsem navíc i nastavil indexování některých sloupců, resp. jejich kombinací (pro zrychlení vyhledávání), a integritní omezení, na příklad to, že v tabulce \texttt{skills} musí být kombinace \texttt{test\_id} a \texttt{name} unikátní.
+
+Složitější operace nad datovým modelem jsou naprogramovány jako funkce v souboru \texttt{/datamodel/procedures.py}.
+
+\begin{listing}
+\centering
+\begin{minted}[linenos,fontsize=\footnotesize]{python}
+class TimeStampMixin:
+    created_at: datetime = Column(DateTime, default=_get_date)
+    updated_at: datetime = Column(DateTime, onupdate=_get_date)
+
+
+class Skill(ModelBase, TimeStampMixin):
+    __tablename__ = 'skills'
+
+    id: int = Column(Integer, primary_key=True, index=True)
+    name: str = Column(String, nullable=False)
+    test_id: int = Column(Integer, ForeignKey('tests.id'), nullable=False)
+    text: str = Column(Text)
+
+    test: Test = relationship("Test", back_populates="skills")
+    states: List[SkillState] = relationship("SkillState", back_populates="skill")
+
+    __table_args__ = (UniqueConstraint('name', 'test_id', name='_test_skill_name_ux'),)
+\end{minted}
+\caption{Definice \uv{mixinu} pro časovou značku vytvoření a poslední změny a deklarace třídy pro dovednnost z \texttt{datamodel/model.py}.}
+\label{lst:SkillDeclaration}
+\end{listing}
+
+\section{Rozhraní s \textit{R}}
+V této sekci krátce popíšu svoji konkrétní implementaci rozhraní mezi \textit{Pythonem} a \textit{R}. Celé toto rozhraní je naprogramováni v modulu \texttt{inteRface}.
+
+Potřebné funkce z \texttt{catest} jsou volány v souboru \texttt{/inteRface/procedures.py}. Bylo nutné, abych si doprogramoval v \textit{R} i dvě pomocné funkce -- jsou uvedeny přímo v tomto souboru.
+
+Od těchto implementačních detailů je ovšem zbytek aplikace odstíněn pomocí abstrakce v podobě třídy \mintinline{python}|BayesNet| v souboru \texttt{/inteRface/classes.py}. Pomocí operací na objektech této třídy lze provádět všechny potřebné interakce s knihovnou \texttt{catest}, konkrétně jde o zpracování textových definic bayesovských sítí, vkládání informací do modelu, výběr otázek a získávání pravděpodobností stavů dovedností (což jsou v podstatě výsledky testu).
+
+\begin{listing}
+\centering
+\begin{minted}[linenos,fontsize=\footnotesize]{python}
+ro.r('''get.numbers.of.states <- function(model, node_vector) {
+                nl <- model@nodes[node_vector]
+                vv <- 1:length(nl@nodes)
+                for(node in 1:length(nl@nodes)){
+                    vv[node] <- nl@nodes[[node]]@number.of.states
+                }
+                vv
+            }''')
+r_get_numbers_of_states = ro.r['get.numbers.of.states']
+\end{minted}
+\caption{Funkce v \textit{R} zahrnuté v kódu \textit{Pythonu} z \texttt{inteRface/procedures.py}.}
+\label{lst:PyR}
+\end{listing}
+
+Vzhledem k tomu, že šlo o asi nejkomplikovanější část aplikace na implementaci, napsal jsem k modulu \texttt{inteRface}, konkrétně ke třídě \mintinline{python}|BayesNet| jednotkové testy do souboru \texttt{/dev/test\_bayesNet.py}.
+
+\section{Webové rozhraní}
+Samotnou interakci s uživatelem zajišťuje webové rozhraní. HTTP požadavky od uživatelů jsou obslouženy funkcemi definovanými v souboru \texttt{routing.py}. Pro názornost zde jednu uvedu a popíšu.
+
+\begin{listing}
+\centering
+\begin{minted}[linenos,fontsize=\footnotesize]{python}
+@app.route('/test/<int:test_id>')
+@login_required
+def test_overview(test_id):
+    test: Test = get_entity_by_type_and_id(Test, test_id)
+    check_test_existence_and_redirect_if_not_exists(test)
+    test_instances = list_test_instances_by_test_and_student(test, current_user)
+    possible_criteria = list_selection_criteria()
+    test_instance_options_form = \
+      TestInstanceOptionsForm(possible_criteria=[(sc.id, sc.name) for sc
+			                         in possible_criteria],
+                              default_criterion=test.default_selection_criterion.id)
+    return render_template("test_overview.html", test=test,
+		           test_instances=test_instances,
+                           test_instance_options_form=test_instance_options_form,
+                           possible_criteria=possible_criteria)
+
+\end{minted}
+\caption{Funkce pro zobrazení přehledu testu z \texttt{routing.py}.}
+\label{lst:test_view}
+\end{listing}
+
+Na prvních dvou řádcích v ukázce kódu \ref{lst:test_view} jsou tak zvané dekorátory. První z nich zajišťuje propojení s příslušnou URI požadavku -- argument dekorátoru je URI s tím, že pomocí podřetězce \mintinline{python}|<int:test_id>| je určeno, že na konci URI má být číslo, které se má pak dekorované funkci předat jako argument. Druhý dekorátor zajišťuje, že pro zobrazení stránky je nutné, aby byl uživatel přihlášen. Provedením řádku 4 se do proměnné \mintinline{python}|test| nahraje objekt reprezentující test (třída je anotována dle \cite{PEP484}). Následuje kontrola, že test vůbec v databázi existuje (pokud ne, je uživatel přesměrován na seznam testů). Poté jsou do příslušných proměnných nahrány případy daného testu, výběrová kritéria a formulář pro zahájení nového případu testu. Nakonec funkce vrátí \uv{vykreslenou} šablonu \mintinline{python}|"test_overview.html"|.
+
+Ostatní funkce definované v \texttt{routing.py} mají podobnou strukturu. Nejdříve se načtou do proměnných data z databáze, proběhne kontrola vstupů (fragmenty URI jako \mintinline{python}|test_id| výše a případně data z formulářů), jsou provedeny změny v databázi, je-li to třeba, nakonec je buď \uv{vykreslena} příslušná šablona a odeslána uživateli, nebo je uživatel někam přesměrován.
+
+Šablony se vykreslují pomocí systému \textit{Jinja} \cite{jinja2}. Všechny šablony jsou ve složce \texttt{templates}. Základní šablona (všechny ostatní jsou od ní odvozeny) tvoří soubor \texttt{common.html}, který také slouží jako šablona pro úvodní stránku.
+
+Celá struktura používaných URI je navržena, jako kdyby šlo o REST API. Dokonce platí, že požadavky, které způsobují tvorbu nových záznamů v databázi musejí používat HTTP metodu \texttt{POST} (všude jinde se předpokládá metoda \texttt{GET}).
+
+Tvorbu a validaci formulářů zajišťuje knihovna \textit{WTForms} \cite{wtforms}. Také asi stojí za zmínku, že samotný web (tedy příslušný HTML a CSS kód) je psán pomocí CSS šablony \textit{Skeleton} \cite{skeleton.css}, díky které je \uv{responzivní}, tedy měl by být použitelný i na mobilních zařízeních (telefony, tablety apod.).
+
+\section{Shrnutí struktury vyvíjeného systému}
+Celý systém tedy vlastně sestává ze 4 hlavních částí:
+\begin{itemize}
+	\item aplikace samotná, napsaná v \textit{Pythonu} -- v podstatě moje vlastní knihovna \texttt{CArisTotle} --,
+	\item SQL databáze, přistupovaná přes \textit{SQLAlchemy}, -- nyní pro vývoj \textit{SQLite} --,
+	\item knihovna \texttt{catest} v \textit{R}, propojená přes \textit{RPy2} se zbytkem systému a
+	\item \textit{Jinja} šablon pro tvorbu výstupního HTML kódu.
+\end{itemize}
+
+Funkce pro vyřizování HTTP požadavků používají k přístupu k datovému modelu různé pomocné funkce a třídu \mintinline{python}|BayesNetDataModelWrapper| z modulu \texttt{common}. Třída \mintinline{python}|BayesNetDataModelWrapper| zapouzdřuje je jakýmsi pomyslným těžištěm aplikace, protože integruje operace v rámci \texttt{catest} s operacemi na datech v databázi. Pomocí metod této třídy protékají data mezi databází a \textit{R}, případně nakonec i k uživateli.
+
+\section{Pracovní postup studenta}
+Studen začne typicky na úvodní stránce (obrázek )
+
+\section{Budoucí vývoj}
+
+% TODO: poznámky k instalaci
+
+% TODO: CLI + nahrávání nových testů
 
 % \section{Struktura aplikace}
 % Schematicky je struktura zachycená na obrázku x.y. Jádro aplikace tvoří společně se základní konfigurací aplikace několik pohledových funkcí (dokumentace \textit{Flasku} je obecně uvádí jako \uv{view functions}), které definují, co se má na základě HTTP požadavku uživatele vykonat. Pro obsloužení většiny požadavků stačí, aby % TODO: obrázek
@@ -569,10 +692,25 @@ Zde napište text úvodu (1-3 strany, nerozdělujte na podkapitoly) nebo jej vlo
 
 	\bibitem{sqlite} \textit{SQLite} [online]. 2017 [cit. 2017-08-31]. Dostupné z: https://www.sqlite.org
 
+	\bibitem{babel} \textit{Babel} [online]. Babel Team, c2017 [cit. 2017-08-30]. Dostupné z: http://babel.pocoo.org/en/latest/
+
+	\bibitem{Flask-Security} \textit{Flask-Security} [online]. Matt Wright, c2012 [cit. 2017-08-31]. Dostupné z: https://pythonhosted.org/Flask-Security/
+
+	\bibitem{wtforms} \textit{WTForms} [online]. WTForms Team, c2010 [cit. 2017-08-31]. Dostupné z: http://wtforms.readthedocs.io/
+
+	\bibitem{jinja2} \textit{Jinja2} [online]. Armin Ronacher, c2014 [cit. 2017-08-31]. Dostupné z: http://jinja.pocoo.org/
+
+	\bibitem{skeleton.css} \textit{Skeleton: Responsive CSS boilerplate} [online]. Dave Gamache et al., 2014 [cit. 2017-08-31]. Dostupné z: http://getskeleton.com/
+
+	\bibitem{hugin} \textit{HUGIN} [online]. Aalborg: HUGIN EXPERT, 2017 [cit. 2017-08-31]. Dostupné z: http://www.hugin.com/
+
 % ---------------------------------------
 
 	\bibitem{ORM} Object-relational mapping. In: \textit{Wikipedia: the free encyclopedia} [online]. San Francisco (CA): Wikimedia Foundation, 2001- [cit. 2017-08-30]. Dostupné z: https://en.wikipedia.org/wiki/Object-relational\_mapping
 
+	\bibitem{multiparadigm} Comparison of multi-paradigm programming languages. In: \textit{Wikipedia: the free encyclopedia} [online]. San Francisco (CA): Wikimedia Foundation, 2001-2017 [cit. 2017-08-30]. Dostupné z: https://en.wikipedia.org/w/index.php?title=Comparison\_of\_multi-paradigm\_programming\_languages\&oldid=797311914
+
+	\bibitem{PEP484} PEP 484: Type Hints. \textit{Python} [online]. Python Foundation, 2014 [cit. 2017-08-31]. Dostupné z: https://www.python.org/dev/peps/pep-0484/
 
 \end{thebibliography}
 
