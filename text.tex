@@ -567,7 +567,7 @@ r_get_numbers_of_states = ro.r['get.numbers.of.states']
 \label{lst:PyR}
 \end{listing}
 
-Vzhledem k tomu, že šlo o asi nejkomplikovanější část aplikace na implementaci, napsal jsem k modulu \texttt{inteRface}, konkrétně ke třídě \mintinline{python}|BayesNet| jednotkové testy do souboru \texttt{/dev/test\_bayesNet.py}.
+Vzhledem k tomu, že šlo o asi nejkomplikovanější část aplikace na implementaci, napsal jsem k modulu \texttt{inteRface}, konkrétně ke třídě \mintinline{python}|BayesNet|, jednotkové testy do souboru \texttt{/dev/test\_bayesNet.py}.
 
 \section{Webové rozhraní}
 Samotnou interakci s uživatelem zajišťuje webové rozhraní. HTTP požadavky od uživatelů jsou obslouženy funkcemi definovanými v souboru \texttt{routing.py}. Pro názornost zde jednu uvedu a popíšu.
@@ -615,10 +615,17 @@ Celý systém tedy vlastně sestává ze 4 hlavních částí:
 	\item \textit{Jinja} šablon pro tvorbu výstupního HTML kódu.
 \end{itemize}
 
-Funkce pro vyřizování HTTP požadavků používají k přístupu k datovému modelu různé pomocné funkce a třídu \mintinline{python}|BayesNetDataModelWrapper| z modulu \texttt{common}. Třída \mintinline{python}|BayesNetDataModelWrapper| zapouzdřuje je jakýmsi pomyslným těžištěm aplikace, protože integruje operace v rámci \texttt{catest} s operacemi na datech v databázi. Pomocí metod této třídy protékají data mezi databází a \textit{R}, případně nakonec i k uživateli.
+Funkce pro vyřizování HTTP požadavků používají k přístupu k datovému modelu různé pomocné funkce a třídu \mintinline{python}|BayesNetDataModelWrapper| z modulu \texttt{common}. Třída \mintinline{python}|BayesNetDataModelWrapper| zapouzdřuje je jakýmsi pomyslným těžištěm aplikace, protože integruje operace v rámci \texttt{catest} s operacemi na datech v databázi. Pomocí metod této třídy protékají data mezi databází a \textit{R}, případně nakonec i k uživateli jako hypertext.
 
 \section{Pracovní postup studenta}
-Studen začne typicky na úvodní stránce (obrázek )
+Student může začít na úvodní stránce, nebo může být odkázán přímo na požadovaný test (třeba \url{http://cat.utia.cas.cz:1080/test/1}). Poté by měl zahájit nový případ testu.
+% TODO: link shoud work as expected, update app on server
+
+Po zahájení případu testu začne běžet čas testu (což je relevantní, pokud je nastavena nějaká maximální doba řešení testu). Student si může otázku vybrat sám ze seznamu, nebo využít možnosti automatického výběru dle kritéria.
+
+Jakmile je dosaženo nějakého z ukončovacích kritérií (entropie na dovednostech klesne pod zadanou mez, je zodpovězen dostatečný počet otázek, nebo uplyne vyhrazený čas), je případ testu uzavřen. Výsledky v podobě pravděpodobností stavů dovednostních veličin jsou průběžně zobrazovány v přehledu případu testu.
+
+%TODO: změnit strukturu druhé kapitoly
 
 \section{Budoucí vývoj}
 
@@ -653,7 +660,7 @@ Zde napište text úvodu (1-3 strany, nerozdělujte na podkapitoly) nebo jej vlo
 
 %%%%%%%%%%%% SEZNAM POUŽITÝCH ZDROJŮ (LITERATURA) %%%%%%%%%%%%
 \clearpage  % SEM NESAHEJTE!
-\addcontentsline{toc}{section}{Literatura} % SEM NESAHEJTE!
+\addcontentsline{toc}{chapter}{Literatura} % SEM NESAHEJTE!
 
 \begin{thebibliography}{99}
 	% formát: ČSN ISO 690. Můžete si to vygenerovat na http://www.citacepro.com (přihlaste se přes odkaz "ČVUT"), umí to vygenerovat TeX
@@ -712,6 +719,8 @@ Zde napište text úvodu (1-3 strany, nerozdělujte na podkapitoly) nebo jej vlo
 
 	\bibitem{PEP484} PEP 484: Type Hints. \textit{Python} [online]. Python Foundation, 2014 [cit. 2017-08-31]. Dostupné z: https://www.python.org/dev/peps/pep-0484/
 
+	\bibitem{CPython} CPython. In: \textit{Wikipedia: the free encyclopedia} [online]. San Francisco (CA): Wikimedia Foundation, 2017 [cit. 2017-09-07]. Dostupné z: https://en.wikipedia.org/w/index.php?title=CPython\&oldid=797221729
+
 \end{thebibliography}
 
 
@@ -723,9 +732,28 @@ Zde napište text úvodu (1-3 strany, nerozdělujte na podkapitoly) nebo jej vlo
 
 %%%%%%%%%%%% Příloha A (tj. 1. kapitola v rámci příloh) %%%%%%%%%%%%
 
-\section{Název první přílohy}
-%
-Zde napište text první přílohy nebo jej vložte, např.: \texttt{\textbackslash input\{priloha\_A.tex\}}.
+\section*{Instalace a rozhraní přes příkazový řádek}
+\addcontentsline{toc}{section}{Instalace a rozhraní přes příkazový řádek}
+
+V této sekci krátce popíšu možný postup instalace systému pro vyzkoušení. Budu zde předpokládat instalaci na nějakou moderní distribuci \textit{GNU/Linux} (třeba \textit{Fedora}, \textit{CentOS}, \textit{ArchLinux}, \textit{Antegros}). Dále uvedu několik příkazů, které aplikace podporuje (ze souboru \texttt{cli.py}).
+
+Nejdříve je nutné zajistit, že jsou nainstalovány všechny závislosti. Vzhledem k tomu, že, jak jsem zmínil výše, používám typové anotace \cite{PEP484}, je nutné mít nainstalovaný \textit{Python} verze aspoň \texttt{3.5}. Pro chod knihovny \textit{RPy2} je naneštěstí nutné používat interpreter \textit{CPython} \cite{CPython}. Dále je potřeba mít nainstalovanou dostatečně novou verzi interpreteru \textit{R} (v moment psaní mám nainstalovanou verzi \texttt{3.4.1}).
+
+Nejjednodušší asi je si naklonovat repozitář na \url{https://github.com/FNj/CArisTotle} pomocí:
+\begin{minted}{bash}
+git clone https://github.com/FNj/CArisTotle
+\end{minted}
+poté, byť to není nezbytně nutné, je vhodné vytvořit si pro aplikaci virtuální prostředí \textit{Pythonu}
+Poté je potřeba nainstalovat knihovnu \texttt{catest} a další knihobny \textit{R}, na kterých je závislá. Vše potřebné je ve složce \texttt{../dependecies/R}. Stačí si v této složce spustit interpreter a zadat příkaz:
+\begin{minted}{R}
+source("install_deps.R")
+\end{minted}
+Budete vyzvání k výberu repozitáře, ze kterého se mají příslušné balíčky nainstalovat. Taky se pak nelekněte spousty varování compileru \textit{C++}.
+
+Poté, byť to není nezbytně nutné, je vhodné vytvořit si pro aplikaci virtuální prostředí \textit{Pythonu} třeba jako:
+\begin{minted}{bash}
+virtualenv --no-site-packages CArisTotle/VEnv
+\end{minted}
 %
 %\input{priloha_A.tex} % text vkládán ze souboru, kde je i příkaz \section{...}
 
