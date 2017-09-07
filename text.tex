@@ -489,7 +489,17 @@ Aplikace musí ukládat dlouhodobě informace o uživatelích, definicích adapt
 
 Pro lokalizaci (překlad) tam jsem použil knihovnu \textit{Babel} \cite{babel}. Překlad je použit jen tam, kde to bylo vhodné kvůli použití nějaké externí knihovny, co to předpokládala.
 
-\section{Datový model}
+\section{Struktura aplikace}
+Celý systém sestává ze 4 hlavních částí:
+\begin{itemize}
+	\item aplikace samotná, napsaná v \textit{Pythonu} -- v podstatě moje vlastní knihovna \texttt{CArisTotle} --,
+	\item SQL databáze, přistupovaná přes \textit{SQLAlchemy}, -- nyní pro vývoj \textit{SQLite} --,
+	\item knihovna \texttt{catest} v \textit{R}, propojená přes \textit{RPy2} se zbytkem systému a
+	\item \textit{Jinja} šablon pro tvorbu výstupního HTML kódu.
+\end{itemize}
+V následující sekci jsou tyto části krátce popsány.
+
+\subsection{Datový model}
 V této sekci je krátce popsán použitý datový model. Graficky je znázorněn na obrázku \ref{fig:data_model}. Jednotlivé uvedené entity jsou vlastně zároveň tabulky databázi a třídy objektů v samotném prostředí \textit{Pythonu} ve smyslu objektově relačního zobrazení (konceptem shrnutým třeba v \cite{ORM}). Datový model je deklarován v modulu \texttt{datamodel}, konkrétně v souboru \texttt{/datamodel/model.py}.
 
 \begin{figure}
@@ -543,7 +553,7 @@ class Skill(ModelBase, TimeStampMixin):
 \label{lst:SkillDeclaration}
 \end{listing}
 
-\section{Rozhraní s \textit{R}}
+\subsection{Rozhraní s \textit{R}}
 V této sekci krátce popíšu svoji konkrétní implementaci rozhraní mezi \textit{Pythonem} a \textit{R}. Celé toto rozhraní je naprogramováni v modulu \texttt{inteRface}.
 
 Potřebné funkce z \texttt{catest} jsou volány v souboru \texttt{/inteRface/procedures.py}. Bylo nutné, abych si doprogramoval v \textit{R} i dvě pomocné funkce -- jsou uvedeny přímo v tomto souboru.
@@ -569,7 +579,7 @@ r_get_numbers_of_states = ro.r['get.numbers.of.states']
 
 Vzhledem k tomu, že šlo o asi nejkomplikovanější část aplikace na implementaci, napsal jsem k modulu \texttt{inteRface}, konkrétně ke třídě \mintinline{python}|BayesNet|, jednotkové testy do souboru \texttt{/dev/test\_bayesNet.py}.
 
-\section{Webové rozhraní}
+\subsection{Webové rozhraní}
 Samotnou interakci s uživatelem zajišťuje webové rozhraní. HTTP požadavky od uživatelů jsou obslouženy funkcemi definovanými v souboru \texttt{routing.py}. Pro názornost zde jednu uvedu a popíšu.
 
 \begin{listing}
@@ -606,15 +616,6 @@ Celá struktura používaných URI je navržena, jako kdyby šlo o REST API. Dok
 
 Tvorbu a validaci formulářů zajišťuje knihovna \textit{WTForms} \cite{wtforms}. Také asi stojí za zmínku, že samotný web (tedy příslušný HTML a CSS kód) je psán pomocí CSS šablony \textit{Skeleton} \cite{skeleton.css}, díky které je \uv{responzivní}, tedy měl by být použitelný i na mobilních zařízeních (telefony, tablety apod.).
 
-\section{Shrnutí struktury vyvíjeného systému}
-Celý systém tedy vlastně sestává ze 4 hlavních částí:
-\begin{itemize}
-	\item aplikace samotná, napsaná v \textit{Pythonu} -- v podstatě moje vlastní knihovna \texttt{CArisTotle} --,
-	\item SQL databáze, přistupovaná přes \textit{SQLAlchemy}, -- nyní pro vývoj \textit{SQLite} --,
-	\item knihovna \texttt{catest} v \textit{R}, propojená přes \textit{RPy2} se zbytkem systému a
-	\item \textit{Jinja} šablon pro tvorbu výstupního HTML kódu.
-\end{itemize}
-
 Funkce pro vyřizování HTTP požadavků používají k přístupu k datovému modelu různé pomocné funkce a třídu \mintinline{python}|BayesNetDataModelWrapper| z modulu \texttt{common}. Třída \mintinline{python}|BayesNetDataModelWrapper| zapouzdřuje je jakýmsi pomyslným těžištěm aplikace, protože integruje operace v rámci \texttt{catest} s operacemi na datech v databázi. Pomocí metod této třídy protékají data mezi databází a \textit{R}, případně nakonec i k uživateli jako hypertext.
 
 \section{Pracovní postup studenta}
@@ -625,35 +626,24 @@ Po zahájení případu testu začne běžet čas testu (což je relevantní, po
 
 Jakmile je dosaženo nějakého z ukončovacích kritérií (entropie na dovednostech klesne pod zadanou mez, je zodpovězen dostatečný počet otázek, nebo uplyne vyhrazený čas), je případ testu uzavřen. Výsledky v podobě pravděpodobností stavů dovednostních veličin jsou průběžně zobrazovány v přehledu případu testu.
 
-%TODO: změnit strukturu druhé kapitoly
+\section{Analýza časové náročnosti}
+Analyzoval jsem zběžně časovou náročnost operací nutných pro chod aplikace. Nejvíce uživatel vždy pocítí, pokud je k vyřízení jeho poždavku nutné použít \texttt{catest}. Nejvíce času v tomto případě aplikace stráví výpočty v rámci této knihovny. Sám vedoucí práce uvedl, že se při vývoji autoři \texttt{catest} nesnažili příliš optimalizovat časovou náročnost. Problémem je i fakt, že v \textit{R} se zpravidla argumenty funkcí předávají kopírováním, což samozřejmě značně zvyšuje paměťové i výpočetní nároky.
 
-\section{Budoucí vývoj}
+Tyto problémy by šlo řešit třeba tak, že by se po zodpovězení otázky asynchronně (než student zodpoví další otázky) uvažovaly všechny možné scénáře vývoje testu několik dalších kroků testu dopředu. Tyto scénáře i s příslušnými otázkami by se zazamenávaly do databáze a výběr otázky by pak znamenal jen vyhledání v databázi. Také by samozřejmě bylo možné provést alternativní implementaci funkcionality \texttt{catest}, která by byla výrazně rychlejší třeba v \textit{C++} nebo \textit{Julia} \cite{julia}. Další možností vývoje uvedu v následující sekci.
+% TODO: změnit strukturu druhé kapitoly
 
-% TODO: poznámky k instalaci
+\section{Možnosti budoucího vývoje}
+Největším problémem aplikace je, že užvatelské rozhraní nemá žádné nástroje pro analýzu výsledků testu (tedy aspoň nic komplexnějšího než prosté zobrazení pravděpodobností stavů dovedností). Nicméně dat o průběhu testů systém shromažďuje, dle mého názoru, dostatek, rozvoj je v tomto směru tedy možný dosti velký.
 
-% TODO: CLI + nahrávání nových testů
+Celkově by asi bylo na místě vyvinou nějaké vlastní webové rozhraní pro zadávání a administraci testů. Zatím by bylo nejjednodušší pro zadávání testů do systému navrhnout nějaký strojově čitelný formát založený třeba na XML, nebo i prostý XML soubor či JSON.
 
-% \section{Struktura aplikace}
-% Schematicky je struktura zachycená na obrázku x.y. Jádro aplikace tvoří společně se základní konfigurací aplikace několik pohledových funkcí (dokumentace \textit{Flasku} je obecně uvádí jako \uv{view functions}), které definují, co se má na základě HTTP požadavku uživatele vykonat. Pro obsloužení většiny požadavků stačí, aby % TODO: obrázek
-
-% \section{Datový model}
-%
-% \section{Webové rozhraní a pracovní postupy}
-%
-% \subsection{Rozhraní a pracovní postup studenta}
-%
-% \subsection{Rozhraní a pracovní postup zadavatele}
-%
-% \section{Analýza výpočetní náročnosti aplikace}
-
-
-% ukázky volání?
+Co se týče hlubší analýzy výsledků, mělo by asi smysl uvažovat na příklad o analýze častých sledů otázek, korelace stavů otázek, rychlost poklesu entropie v modelu (nebo v jeho částech) nebo třeba o nějakém souhrnu výsledků daného testu (třeba histogram pravděpodobností stavů).
 
 % -------------------------------------
 \chapter*{Závěr} % SEM NESAHEJTE!
 \addcontentsline{toc}{chapter}{Závěr} % SEM NESAHEJTE!
 %
-Zde napište text úvodu (1-3 strany, nerozdělujte na podkapitoly) nebo jej vložte ze samostatného souboru: např. příkazem \texttt{\textbackslash input\{vnitrek\_zaver.tex\}}.
+%V této práci jsem popsa
 %
 %\input{vnitrek_zaver.tex}
 
@@ -721,6 +711,8 @@ Zde napište text úvodu (1-3 strany, nerozdělujte na podkapitoly) nebo jej vlo
 
 	\bibitem{CPython} CPython. In: \textit{Wikipedia: the free encyclopedia} [online]. San Francisco (CA): Wikimedia Foundation, 2017 [cit. 2017-09-07]. Dostupné z: https://en.wikipedia.org/w/index.php?title=CPython\&oldid=797221729
 
+	\bibitem{julia} \textit{Julia Language} [online]. Austin: NumFocus, 2017 [cit. 2017-08-31]. Dostupné z: https://julialang.org/
+
 \end{thebibliography}
 
 
@@ -733,29 +725,59 @@ Zde napište text úvodu (1-3 strany, nerozdělujte na podkapitoly) nebo jej vlo
 %%%%%%%%%%%% Příloha A (tj. 1. kapitola v rámci příloh) %%%%%%%%%%%%
 
 \section*{Instalace a rozhraní přes příkazový řádek}
+\label{appendix:installation}
 \addcontentsline{toc}{section}{Instalace a rozhraní přes příkazový řádek}
 
 V této sekci krátce popíšu možný postup instalace systému pro vyzkoušení. Budu zde předpokládat instalaci na nějakou moderní distribuci \textit{GNU/Linux} (třeba \textit{Fedora}, \textit{CentOS}, \textit{ArchLinux}, \textit{Antegros}). Dále uvedu několik příkazů, které aplikace podporuje (ze souboru \texttt{cli.py}).
 
-Nejdříve je nutné zajistit, že jsou nainstalovány všechny závislosti. Vzhledem k tomu, že, jak jsem zmínil výše, používám typové anotace \cite{PEP484}, je nutné mít nainstalovaný \textit{Python} verze aspoň \texttt{3.5}. Pro chod knihovny \textit{RPy2} je naneštěstí nutné používat interpreter \textit{CPython} \cite{CPython}. Dále je potřeba mít nainstalovanou dostatečně novou verzi interpreteru \textit{R} (v moment psaní mám nainstalovanou verzi \texttt{3.4.1}).
+Nejdříve je nutné zajistit, že jsou nainstalovány všechny závislosti. Vzhledem k tomu, že, jak jsem zmínil výše, používám typové anotace \cite{PEP484}, je nutné mít nainstalovaný \textit{Python} verze aspoň \texttt{3.5}. Pro chod knihovny \textit{RPy2} je naneštěstí nutné používat interpreter \textit{CPython} \cite{CPython}. Dále je potřeba mít nainstalovanou dostatečně novou verzi interpreteru \textit{R} (v moment psaní mám nainstalovanou verzi \texttt{3.4.1}). Také je potřeba mít k dispozici nějaký relační databázový systém. Bez zásahu do \texttt{CArisTotle/config}
 
-Nejjednodušší asi je si naklonovat repozitář na \url{https://github.com/FNj/CArisTotle} pomocí:
+Nejjednodušší asi je si naklonovat repozitář na \url{https://github.com/FNj/CArisTotle} a přesunout se do příslušné složky pomocí:
 \begin{minted}{bash}
 git clone https://github.com/FNj/CArisTotle
+cd CArisTotle
 \end{minted}
 poté, byť to není nezbytně nutné, je vhodné vytvořit si pro aplikaci virtuální prostředí \textit{Pythonu}
-Poté je potřeba nainstalovat knihovnu \texttt{catest} a další knihobny \textit{R}, na kterých je závislá. Vše potřebné je ve složce \texttt{../dependecies/R}. Stačí si v této složce spustit interpreter a zadat příkaz:
+Poté je potřeba nainstalovat knihovnu \texttt{catest} a další knihobny \textit{R}, na kterých je závislá. Vše potřebné je ve složce \texttt{dependencies/R}. Stačí si spustit interpreter (příkaz \mintinline{bash}|R|) a zadat příkaz:
 \begin{minted}{R}
-source("install_deps.R")
+source("dependencies/R/install_deps.R")
 \end{minted}
 Budete vyzvání k výberu repozitáře, ze kterého se mají příslušné balíčky nainstalovat. Taky se pak nelekněte spousty varování compileru \textit{C++}.
 
 Poté, byť to není nezbytně nutné, je vhodné vytvořit si pro aplikaci virtuální prostředí \textit{Pythonu} třeba jako:
 \begin{minted}{bash}
-virtualenv --no-site-packages CArisTotle/VEnv
+python3 -m venv VEnv
 \end{minted}
-%
-%\input{priloha_A.tex} % text vkládán ze souboru, kde je i příkaz \section{...}
+a aktivovat si ho:
+\begin{minted}{bash}
+source VEnv/bin/activate
+\end{minted}
 
+Následně si nainstalujte potřebné knihovny \textit{Pythonu}:
+\begin{minted}{bash}
+pip install -r requirements.txt
+\end{minted}
+
+Poté už lze začít používat samotnou aplikaci. Nejdříve je potřeba nastavit proměnnou ukazující na modul s aplikací:
+\begin{minted}{bash}
+export FLASK_APP=CArisTotle/__init__.py
+\end{minted}
+dále je potřeba inicializovat databázi (vytvoření schéma, naplnění číselníkových tabulek):
+\begin{minted}{bash}
+flask initdb
+\end{minted}
+pak je pro testování nutné naplnit databázi i testovacími daty:
+\begin{minted}{bash}
+flask testdata
+\end{minted}
+a teď už lze aplikaci spustit:
+\begin{minted}{bash}
+flask run
+\end{minted}
+
+Až skončíte práci s aplikací, můžete databázi snadno promazat:
+\begin{minted}{bash}
+flask dropall
+\end{minted}
 
 \end{document} % SEM NESAHEJTE! Konec.
