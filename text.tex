@@ -261,7 +261,11 @@ V \kde\ dne .................... &........................................ \\	% 
 \chapter*{Úvod} % SEM NESAHEJTE!
 \addcontentsline{toc}{chapter}{Úvod} % SEM NESAHEJTE!
 %
-Zde napište text úvodu (1-3 strany, nerozdělujte na podkapitoly) nebo jej vložte ze samostatného souboru: např. příkazem \texttt{\textbackslash input\{vnitrek\_uvod.tex\}}.
+V první kapitole tohoto textu je krátce představen koncept počítačového adaptivního testování a jedna z cest jeho implementace, konkrétně pomocí bayesovských sítí. Toto krátké představení by mělo poskytnout dostatečný znalostní základ pro aspoň obecné pochopení fungování konkrétního systému popsaného v kapitole druhé.
+
+Druhá kapitola zároveň slouží jako obecná dokumentace webové aplikace pro adaptivní testování v rámci výzkumného úkolu vyvíjené. V této kapitole jsou také popsány možnosti dalšího vývoje aplikace.
+
+Na samotném konci tohoto textu jsou jako jediná příloha uvedeny instrukce pro instalaci a nasazení aplikace.
 %
 %\input{vnitrek_uvod.tex}
 
@@ -299,7 +303,7 @@ Tomuto ovšem musí předcházet tvorba celého testu a příslušného modelu z
 
 % -------------------------------------------------
 
-\section{Znalostní model (Bayesovské sítě)}
+\section{Znalostní model (bayesovské sítě)}
 Pro modelování znalostí studenta v rámci přístupu k adaptivnímu testování použitému v této práci (navrženému v \cite{almond_tlustospis}) se používá bayesovských sítí. Jedná se o pravděpodobnostní grafický model popisující vztahy mezi náhodnými veličinami pomocí rozdělení podmíněné pravděpodobnosti.
 
 \subsection{Formální definice}
@@ -473,8 +477,8 @@ Případ porovnání zmíněných metod výběru je na obrázku \ref{fig:questio
 
 % -------------------------------------
 
-\chapter{Vyvíjený systém}
-V této kapitole je popsána samotná aplikace, kterou jsem v rámci výzkumného úkolu vyvíjel. Moje aplikace tvoří uživatelské rozhraní pro knihovnu vyvíjenou na Ústavu teorie informace a automatizace AV ČR, která zajišťuje ve zde rozebírané webové aplikaci samotné výpočty na příslušné bayesovské síti, zvané \textit{Computerized Adaptive Testing Generic Framework} (dále jen \texttt{catest}).
+\chapter{Vyvíjená systém}
+V této kapitole je popsán samotná aplikace, kterou jsem v rámci výzkumného úkolu vyvíjel. Moje aplikace tvoří uživatelské rozhraní pro knihovnu vyvíjenou na Ústavu teorie informace a automatizace AV ČR, která zajišťuje ve zde rozebírané webové aplikaci samotné výpočty na příslušné bayesovské síti, zvané \textit{Computerized Adaptive Testing Generic Framework} (dále jen \texttt{catest}).
 
 Všechny cesty v souborovém systému v této kapitole jsou uvedeny relativně vůči kořenu složky \texttt{CArisTotle}. Doporučuji během čtení této kapitoly paralelně procházet kód v repozitáři na \url{https://github.com/FNj/CArisTotle}.
 
@@ -489,7 +493,7 @@ Aplikace musí ukládat dlouhodobě informace o uživatelích, definicích adapt
 
 Pro lokalizaci (překlad) tam jsem použil knihovnu \textit{Babel} \cite{babel}. Překlad je použit jen tam, kde to bylo vhodné kvůli použití nějaké externí knihovny, co to předpokládala.
 
-\section{Struktura aplikace}
+\section{Struktura systému}
 Celý systém sestává ze 4 hlavních částí:
 \begin{itemize}
 	\item aplikace samotná, napsaná v \textit{Pythonu} -- v podstatě moje vlastní knihovna \texttt{CArisTotle} --,
@@ -520,7 +524,7 @@ Tabulka \texttt{tests} obsahuje informace o testu jako celku. Sloupec \texttt{ne
 
 Tabulky \texttt{questions} a \texttt{question\_states} slouží k záznamu otázek daného testu a jejich možných stavů, analogicky lze popsat tabulky \texttt{skills} a \texttt{skill\_states} (měřené dovednosti a jejich stavy). Sloupec \texttt{name} u otázek a dovedností slouží k identifikaci příslušného uzlu ve struktuře sítě, sloupec \texttt{number} zase k identifikaci stavu v tabulkách podmíněných pravděpodobností. Tyto tabulky lze částečně generovat na základě \texttt{net\_definition}, ale \texttt{net\_definition} neobsahuje samotný text otázek, ani popis jejich stavů, takže ten musí doplnit zadavatel zvlášť. Hodnoty ve sloupcích \texttt{name} a \texttt{number} musí odpovídat pojmenování, resp. číslu stavu, daného uzlu v \texttt{net\_definition}.
 
-V tabulce \texttt{possible\_answers} se nacházejí možné odpovědi na otázky (které pak vedou na určítý stav otázky). Tabulka \texttt{test\_instances} uchovává informace o jednotlivých případech testů a tabulka \texttt{answers} samotné odpovědi studenta na položené otázky.
+V tabulce \texttt{possible\_answers} se nacházejí možné odpovědi na otázky (které pak vedou na určítý stav otázky). Je tedy nutné, aby test sestával z uzavřených otázek (tedy otázek s předem danou sadou možných odpovědí). Tabulka \texttt{test\_instances} uchovává informace o jednotlivých případech testů a tabulka \texttt{answers} samotné odpovědi studenta na položené otázky.
 
 Všechny tabulky obsahují sloupce \texttt{created\_at} a \texttt{updated\_at}, které uchovávají datum a čas vytvoření daného řádku v tabulce, resp. jeho poslední změny. Tabulky \texttt{test\_instances} a \texttt{answers} navíc obsahují sloupec \texttt{closed\_at}, který udává časovou značku uzavření daného případu testu nebo odpovědi. Tyto záznamy jsou užitečné pro kopírování záznamů do jiných databází: vždy stačí kopírovat jen záznamy, které vznikly nebo byly změněny po času posledního kopírování. Tyto časové údaje mohou také být užitečné pro analýzu dat, třeba pro odhad doby řešení otázek apod.
 
@@ -642,8 +646,15 @@ Co se týče hlubší analýzy výsledků, mělo by asi smysl uvažovat na pří
 % -------------------------------------
 \chapter*{Závěr} % SEM NESAHEJTE!
 \addcontentsline{toc}{chapter}{Závěr} % SEM NESAHEJTE!
-%
-%V této práci jsem popsa
+
+V první kapitole jsem krátce uvedl koncept adaptivního počítačového testování a popsal jsem krátce i možnosti jeho realizace pomocí bayesovských sítí. Na příkladu jsem popsal návrh adaptivního testu a popsal jsem několik strategií pro výběr otázek.
+
+V druhé kapitole jsem popsal aplikaci, kterou jsem v rámci výzkumného úkolu vyvíjel a její vztah k systému pro adaptivní testování, vyvíjeného na Ústavu teorie informace a automatizace AV ČR, do kterého zapadá. Vysvětlil jsem výběr nástrojů, které jsem zvolil pro implementaci a popsal strukturu aplikace.
+
+Aplikace nyní neposkytuje, byť to požadovalo zadání, žádné komplexní analytické výstupy. Na druhou stranu zadání specifikovalo, že by aplikace měla sloužit k testování znalostí studentů středních škol v oblasti matematiky, vyvinul jsem ovšem systém, který nepředpokládá žádnou konkrétní doménu znalostí k testování, pokud je možné otázky koncipovat výhradně jako uzavřené otázky.
+
+Za největším přínos samotného textu považuji snad přiměřeně podrobnou dokumentaci systému. V textu je také uvedeno několik návrhů pro další vývoj aplikace třeba v rámci navazující diplomové práce.
+
 %
 %\input{vnitrek_zaver.tex}
 
@@ -779,5 +790,7 @@ Až skončíte práci s aplikací, můžete databázi snadno promazat:
 \begin{minted}{bash}
 flask dropall
 \end{minted}
+
+Pro nahrávání testů lze použít třeba skript podobný tomu v souboru \texttt{CArisTotle/dev/test_data.py}
 
 \end{document} % SEM NESAHEJTE! Konec.
