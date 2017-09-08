@@ -342,7 +342,7 @@ V~\cite{almond_tlustospis} je hned v~úvodu jako příklad uvedena síť na obr�
   \label{fig:almond_BN_example}
 \end{figure}
 
-Další příklad jsem vybral z~\cite{plajner16}. Na obrázku \ref{fig:complex_BN_plajner16} zelené uzly reprezentují jednotlivé dovednosti a žluté uzly otázky. Uzel \emph{S8} (celková dovednost, konkrétně znalost jednoduchých funkcí) je předchůdcem všech uzlů, následují ostatní zelené uzly (jednotlivé prvky celkové dovednosti: znalost polynomů, exponenciálních funkcí a tak dále) a na konec žluté uzly, které reprezentují jednotlivé úlohy v~testu.
+Další příklad jsem vybral z~\cite{plajner16}. Na obrázku \ref{fig:complex_BN_plajner16} zelené uzly reprezentují jednotlivé dovednosti a žluté uzly otázky. Uzel \emph{S8} (celková dovednost, konkrétně znalost některých druhů funkcí a jejich vlastností) je předchůdcem všech uzlů, následují ostatní zelené uzly (jednotlivé prvky celkové dovednosti: znalost polynomů, exponenciálních funkcí a tak dále) a na konec žluté uzly, které reprezentují jednotlivé úlohy v~testu.
 
 \begin{figure}
   \centering
@@ -354,7 +354,7 @@ Další příklad jsem vybral z~\cite{plajner16}. Na obrázku \ref{fig:complex_B
 \subsection{Dovednosti a otázky}
 Množina všech náhodných veličin $\mathcal{X}$ se ve zde blíže probíraných případech bude typicky dělit na 2 disjunktní podmnožiny $\mathcal{S} \cup \mathcal{Q} = \mathcal{X}$, kde $\mathcal{S}$ je množina veličin představujících dovednosti a $\mathcal{Q}$ otázky (je tomu tak v~obou zmíněných příkladech a předpkládám to i ve své webové aplikaci). Dále ještě mohou být v~bayesovské síti zastoupeny jako náhodné veličiny další informace o~studentovi jako třeba věk, pohlaví nebo výsledky jiného testování.
 
-Vyhodnocení adaptivního testu bude v~následujícím textu znamenat určení pravděpodobnostní rozdělení veličin z~$\mathcal{S}$ na základě získaných dat. (Toto lze studentovi prezentovat jako pravděpodobnosti dosažené úrovně jeho znalostí, případně možná přístupněji třeba pomocí určitého odvozeného skóre a podobně.)
+Vyhodnocení adaptivního testu bude v~následujícím textu znamenat na základě získaných dat vypočítat pravděpodobností stavů veličin z~$\mathcal{S}$. (Toto lze studentovi prezentovat jako pravděpodobnosti dosažené úrovně jeho znalostí, případně možná přístupněji třeba pomocí určitého odvozeného skóre a podobně.)
 
 Množinu $\mathcal{Q}$ ještě budeme někdy dělit na další 2 disjunktní podmnožiny $Q = \widehat{\mathcal{Q}} \cup \overline{\mathcal{Q}}$, kde $\widehat{\mathcal{Q}}$ je množina dosud nezodovězených otázek a $\overline{\mathcal{Q}}$ již zodpovězených.
 
@@ -370,7 +370,7 @@ Formálně budu psát, že nějaká $X_i \in \overline{\mathcal{Q}}$ nabývá ho
 Možností, jak navrhnout test je nespočet. Pro představu krátce shrnu jako příklad článek podrobně popisující návrhu testu, konkrétně \cite{vomlel_plajner2015}.
 
 \subsection{Návrh obsahu a sběr dat}
-Nejdříve autoři navrhli statický test, ten předložili malé skupině studentů. Na základě zpětné vazby studentů pak vytvořili další, pro studenty srozumitelnšjší, návrh, ze kterého byly také odebrány otázky, které se ukázaly neefektivní pro zisk informací.
+Nejdříve autoři navrhli statický test, ten předložili malé skupině studentů. Na základě zpětné vazby studentů pak vytvořili další, pro studenty srozumitelnější návrh, ze kterého byly také odebrány otázky, které se ukázaly neefektivní pro zisk informací.
 
 Test nakonec obsahoval 29 úloh, které se dále rozdělily celkem na 53 podúloh. Úlohy byly alternativně vyhodnocovány pomocí bodového ohodnocení, nebo jen jako správně či špatně vypracované.
 
@@ -477,8 +477,8 @@ Případ porovnání zmíněných metod výběru je na obrázku \ref{fig:questio
 
 % -------------------------------------
 
-\chapter{Vyvíjená systém}
-V~této kapitole je popsán samotná aplikace, kterou jsem v~rámci výzkumného úkolu vyvíjel. Moje aplikace tvoří uživatelské rozhraní pro knihovnu vyvíjenou na Ústavu teorie informace a automatizace AV ČR, která zajišťuje ve zde rozebírané webové aplikaci samotné výpočty na příslušné bayesovské síti, zvané \textit{Computerized Adaptive Testing Generic Framework} (dále jen \texttt{catest}).
+\chapter{Vyvíjený systém}
+V~této kapitole je popsána samotná aplikace, kterou jsem v~rámci výzkumného úkolu vyvíjel. Moje aplikace tvoří uživatelské rozhraní pro knihovnu vyvíjenou na Ústavu teorie informace a automatizace AV ČR, která zajišťuje ve zde rozebírané webové aplikaci samotné výpočty na příslušné bayesovské síti, zvané \textit{Computerized Adaptive Testing Generic Framework} (dále jen \texttt{catest}).
 
 Všechny cesty v~souborovém systému v~této kapitole jsou uvedeny relativně vůči kořenu složky \texttt{CArisTotle}. Doporučuji během čtení této kapitoly paralelně procházet kód v~repozitáři na \url{https://github.com/FNj/CArisTotle}.
 
@@ -496,9 +496,9 @@ Pro lokalizaci (překlad) tam jsem použil knihovnu \textit{Babel} \cite{babel}.
 \section{Struktura systému}
 Celý systém sestává ze 4 hlavních částí:
 \begin{itemize}
-	\item aplikace samotná, napsaná v~\textit{Pythonu} -- v~podstatě moje vlastní knihovna \texttt{CArisTotle} --,
+	\item aplikace samotné, napsané v~\textit{Pythonu} -- v~podstatě mojí vlastní knihovny \texttt{CArisTotle} --,
 	\item SQL databáze, přistupovaná přes \textit{SQLAlchemy}, -- nyní pro vývoj \textit{SQLite} --,
-	\item knihovna \texttt{catest} v~\textit{R}, propojená přes \textit{RPy2} se zbytkem systému a
+	\item knihovny \texttt{catest} v~\textit{R}, propojené přes \textit{RPy2} se zbytkem systému a
 	\item \textit{Jinja} šablon pro tvorbu výstupního HTML kódu.
 \end{itemize}
 V~následující sekci jsou tyto části krátce popsány.
@@ -522,7 +522,7 @@ Tabulka \texttt{tests} obsahuje informace o~testu jako celku. Sloupec \texttt{ne
 	H(e) = -\sum_{S_i \in \mathcal{S}}\sum_{s_i \in \mathbb{S}_i}P(S_i=s_i|e) \log_2 P(S_i=s_i|e).
 \end{equation}
 
-Tabulky \texttt{questions} a \texttt{question\_states} slouží k~záznamu otázek daného testu a jejich možných stavů, analogicky lze popsat tabulky \texttt{skills} a \texttt{skill\_states} (měřené dovednosti a jejich stavy). Sloupec \texttt{name} u~otázek a dovedností slouží k~identifikaci příslušného uzlu ve struktuře sítě, sloupec \texttt{number} zase k~identifikaci stavu v~tabulkách podmíněných pravděpodobností. Tyto tabulky lze částečně generovat na základě \texttt{net\_definition}, ale \texttt{net\_definition} neobsahuje samotný text otázek, ani popis jejich stavů, takže ten musí doplnit zadavatel zvlášť. Hodnoty ve sloupcích \texttt{name} a \texttt{number} musí odpovídat pojmenování, resp. číslu stavu, daného uzlu v~\texttt{net\_definition}.
+Tabulky \texttt{questions} a \texttt{question\_states} slouží k~záznamu otázek daného testu a jejich možných stavů, analogicky lze popsat tabulky \texttt{skills} a \texttt{skill\_states} (měřené dovednosti a jejich stavy). Sloupec \texttt{name} u~otázek a dovedností slouží k~identifikaci příslušného uzlu ve struktuře sítě, sloupec \texttt{number} zase k~identifikaci stavu v~tabulkách podmíněných pravděpodobností. Tyto tabulky lze částečně generovat na základě \texttt{net\_definition}. Sloupec \texttt{net\_definition} ovšem neobsahuje samotný text otázek ani popis jejich stavů -- ten musí doplnit zadavatel zvlášť. Hodnoty ve sloupcích \texttt{name} a \texttt{number} musí odpovídat pojmenování, resp. číslu stavu, daného uzlu v~\texttt{net\_definition}.
 
 V~tabulce \texttt{possible\_answers} se nacházejí možné odpovědi na otázky (které pak vedou na určítý stav otázky). Je tedy nutné, aby test sestával z~uzavřených otázek (tedy otázek s~předem danou sadou možných odpovědí). Tabulka \texttt{test\_instances} uchovává informace o~jednotlivých případech testů a tabulka \texttt{answers} samotné odpovědi studenta na položené otázky.
 
@@ -558,7 +558,7 @@ class Skill(ModelBase, TimeStampMixin):
 \end{listing}
 
 \subsection{Rozhraní s~\textit{R}}
-V~této sekci krátce popíšu svoji konkrétní implementaci rozhraní mezi \textit{Pythonem} a \textit{R}. Celé toto rozhraní je naprogramováni v~modulu \texttt{inteRface}.
+V~této sekci krátce popíšu svoji konkrétní implementaci rozhraní mezi \textit{Pythonem} a \textit{R}. Celé toto rozhraní je naprogramováno v~modulu \texttt{inteRface}.
 
 Potřebné funkce z~\texttt{catest} jsou volány v~souboru \texttt{/inteRface/procedures.py}. Bylo nutné, abych si doprogramoval v~\textit{R} i dvě pomocné funkce -- jsou uvedeny přímo v~tomto souboru.
 
@@ -628,20 +628,20 @@ Student může začít na úvodní stránce, nebo může být odkázán přímo 
 
 Po zahájení případu testu začne běžet čas testu (což je relevantní, pokud je nastavena nějaká maximální doba řešení testu). Student si může otázku vybrat sám ze seznamu, nebo využít možnosti automatického výběru dle kritéria.
 
-Jakmile je dosaženo nějakého z~ukončovacích kritérií (entropie na dovednostech klesne pod zadanou mez, je zodpovězen dostatečný počet otázek, nebo uplyne vyhrazený čas), je případ testu uzavřen. Výsledky v~podobě pravděpodobností stavů dovednostních veličin jsou průběžně zobrazovány v~přehledu případu testu.
+Jakmile je dosaženo nějakého z~ukončovacích kritérií (entropie na dovednostech klesne pod zadanou mez, je zodpovězen dostatečný počet otázek nebo vypší časový limit), je případ testu uzavřen. Výsledky v~podobě pravděpodobností stavů dovednostních veličin jsou průběžně zobrazovány v~přehledu případu testu.
 
 \section{Analýza časové náročnosti}
-Analyzoval jsem zběžně časovou náročnost operací nutných pro chod aplikace. Nejvíce uživatel vždy pocítí, pokud je k~vyřízení jeho poždavku nutné použít \texttt{catest}. Nejvíce času v~tomto případě aplikace stráví výpočty v~rámci této knihovny. Sám vedoucí práce uvedl, že se při vývoji autoři \texttt{catest} nesnažili příliš optimalizovat časovou náročnost. Problémem je i fakt, že v~\textit{R} se zpravidla argumenty funkcí předávají kopírováním, což samozřejmě značně zvyšuje paměťové i výpočetní nároky.
+Analyzoval jsem zběžně časovou náročnost operací nutných pro chod aplikace. Nejvíce uživatel vždy pocítí, pokud je k~vyřízení jeho požadavku nutné použít \texttt{catest}. Nejvíce času v~tomto případě aplikace stráví výpočty v~rámci této knihovny. Sám vedoucí práce uvedl, že se při vývoji autoři \texttt{catest} nesnažili příliš optimalizovat časovou náročnost. Problémem je i fakt, že v~\textit{R} se zpravidla argumenty funkcí předávají kopírováním, což samozřejmě značně zvyšuje paměťové i výpočetní nároky.
 
-Tyto problémy by šlo řešit třeba tak, že by se po zodpovězení otázky asynchronně (než student zodpoví další otázky) uvažovaly všechny možné scénáře vývoje testu několik dalších kroků testu dopředu. Tyto scénáře i s~příslušnými otázkami by se zazamenávaly do databáze a výběr otázky by pak znamenal jen vyhledání v~databázi. Také by samozřejmě bylo možné provést alternativní implementaci funkcionality \texttt{catest}, která by byla výrazně rychlejší třeba v~\textit{C++} nebo \textit{Julia} \cite{julia}. Další možností vývoje uvedu v~následující sekci.
+Tyto problémy by šlo řešit třeba tak, že by se po zodpovězení otázky asynchronně (než student zodpoví další otázky) uvažovaly všechny možné scénáře vývoje testu několik kroků dopředu. Tyto scénáře i s~příslušnými otázkami by se zaznamenávaly do databáze a výběr další otázky by pak znamenal jen vyhledání příslušného záznamu v~databázi. Také by samozřejmě bylo možné provést alternativní implementaci funkcionality \texttt{catest}, která by byla výrazně rychlejší třeba v~\textit{C++} nebo \textit{Julia} \cite{julia}. Další možností vývoje uvedu v~následující sekci.
 % TODO: změnit strukturu druhé kapitoly
 
 \section{Možnosti budoucího vývoje}
-Největším problémem aplikace je, že užvatelské rozhraní nemá žádné nástroje pro analýzu výsledků testu (tedy aspoň nic komplexnějšího než prosté zobrazení pravděpodobností stavů dovedností). Nicméně dat o~průběhu testů systém shromažďuje, dle mého názoru, dostatek, rozvoj je v~tomto směru tedy možný dosti velký.
+Největším problémem aplikace je, že uživatelské rozhraní nemá žádné nástroje pro analýzu výsledků testu (aspoň nic komplexnějšího než jen zobrazení pravděpodobností stavů dovedností). Nicméně dat o~průběhu testů systém shromažďuje, dle mého názoru, dostatek, takže využít aplikaci již teď pro sběr dat bez větších problémů lze.
 
 Celkově by asi bylo na místě vyvinou nějaké vlastní webové rozhraní pro zadávání a administraci testů. Zatím by bylo nejjednodušší pro zadávání testů do systému navrhnout nějaký strojově čitelný formát založený třeba na XML, nebo i prostý XML soubor či JSON.
 
-Co se týče hlubší analýzy výsledků, mělo by asi smysl uvažovat na příklad o~analýze častých sledů otázek, korelace stavů otázek, rychlost poklesu entropie v~modelu (nebo v~jeho částech) nebo třeba o~nějakém souhrnu výsledků daného testu (třeba histogram pravděpodobností stavů).
+Co se týče hlubší analýzy výsledků, mělo by asi smysl uvažovat mimo jiné o~analýze častých sledů otázek, korelace stavů otázek, rychlost poklesu entropie v~modelu (nebo v~jeho částech) nebo třeba o~nějakém souhrnu výsledků daného testu (na příklad histogram pravděpodobností stavů).
 
 % -------------------------------------
 \chapter*{Závěr} % SEM NESAHEJTE!
@@ -653,7 +653,7 @@ V~druhé kapitole jsem popsal aplikaci, kterou jsem v~rámci výzkumného úkolu
 
 Aplikace nyní neposkytuje, byť to požadovalo zadání, žádné komplexní analytické výstupy. Na druhou stranu zadání specifikovalo, že by aplikace měla sloužit k~testování znalostí studentů středních škol v~oblasti matematiky, vyvinul jsem ovšem systém, který nepředpokládá žádnou konkrétní doménu znalostí k~testování, pokud je možné otázky koncipovat výhradně jako uzavřené otázky.
 
-Za největším přínos samotného textu považuji snad přiměřeně podrobnou dokumentaci systému. V~textu je také uvedeno několik návrhů pro další vývoj aplikace třeba v~rámci navazující diplomové práce.
+Za největším přínos samotného textu považuji poměrně podrobnou dokumentaci systému. V~textu je také uvedeno několik návrhů pro další vývoj aplikace třeba v~rámci navazující diplomové práce.
 
 %
 %\input{vnitrek_zaver.tex}
@@ -720,7 +720,7 @@ Za největším přínos samotného textu považuji snad přiměřeně podrobnou
 
 	\bibitem{PEP484} PEP 484: Type Hints. \textit{Python} [online]. Python Foundation, 2014 [cit. 2017-08-31]. Dostupné z: https://www.python.org/dev/peps/pep-0484/
 
-	\bibitem{CPython} CPython. In: \textit{Wikipedia: the free encyclopedia} [online]. San Francisco (CA): Wikimedia Foundation, 2017 [cit. 2017-09-07]. Dostupné z: https://en.wikipedia.org/w/index.php?title=CPython\&oldid=797221729
+	\bibitem{CPython} CPython. In: \textit{Wikipedia: the free encyclopedia} [online]. San Francisco (CA): Wikimedia Foundation, 2017 [cit. 2017-08-31]. Dostupné z: https://en.wikipedia.org/w/index.php?title=CPython\&oldid=797221729
 
 	\bibitem{julia} \textit{Julia Language} [online]. Austin: NumFocus, 2017 [cit. 2017-08-31]. Dostupné z: https://julialang.org/
 
@@ -741,7 +741,7 @@ Za největším přínos samotného textu považuji snad přiměřeně podrobnou
 
 V~této sekci krátce popíšu možný postup instalace systému pro vyzkoušení. Budu zde předpokládat instalaci na nějakou moderní distribuci \textit{GNU/Linux} (třeba \textit{Fedora}, \textit{CentOS}, \textit{ArchLinux}, \textit{Antegros}). Dále uvedu několik příkazů, které aplikace podporuje (ze souboru \texttt{cli.py}).
 
-Nejdříve je nutné zajistit, že jsou nainstalovány všechny závislosti. Vzhledem k~tomu, že, jak jsem zmínil výše, používám typové anotace \cite{PEP484}, je nutné mít nainstalovaný \textit{Python} verze aspoň \texttt{3.5}. Pro chod knihovny \textit{RPy2} je naneštěstí nutné používat interpreter \textit{CPython} \cite{CPython}. Dále je potřeba mít nainstalovanou dostatečně novou verzi interpreteru \textit{R} (v~moment psaní mám nainstalovanou verzi \texttt{3.4.1}). Také je potřeba mít k~dispozici nějaký relační databázový systém. Bez zásahu do \texttt{CArisTotle/config}
+Nejdříve je nutné zajistit, že jsou nainstalovány všechny závislosti. Vzhledem k~tomu, že, jak jsem zmínil výše, používám typové anotace \cite{PEP484}, je nutné mít nainstalovaný \textit{Python} verze aspoň \texttt{3.5}. Pro chod knihovny \textit{RPy2} je naneštěstí nutné používat interpreter \textit{CPython} \cite{CPython}. Dále je potřeba mít nainstalovanou dostatečně novou verzi interpreteru \textit{R} (v~moment psaní mám nainstalovanou verzi \texttt{3.4.1}). Také je potřeba mít k~dispozici nějaký relační databázový systém. Bez zásahu do \texttt{CArisTotle/config} lze použít zmiňovaný \textit{SQLite}.
 
 Nejjednodušší asi je si naklonovat repozitář na \url{https://github.com/FNj/CArisTotle} a přesunout se do příslušné složky pomocí:
 \begin{minted}{bash}
