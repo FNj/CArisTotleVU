@@ -292,7 +292,7 @@ V~případě, že je úroveň měřených dovedností studenta naopak nízká, h
 \end{enumerate}
 Celý jeden cyklus těchto kroků zde bude uváděn jako krok celého testu.
 
-Tomuto ovšem musí předcházet tvorba celého testu a příslušného modelu znalostí. Po sběru dat o~dostatečném vzorku průběhů testování lze na jejich základě zvýšit přesnost (resp. prakticky prediktivní schopnost) modelu. Příklad obého je uveden v~sekci \ref{sec:test_design}. %odkazat se na další text, vysvětlit víc konkrétně již zde
+Tomuto ovšem musí předcházet tvorba celého testu a příslušného modelu znalostí. Po sběru dat o~dostatečném vzorku průběhů testování lze na jejich základě zvýšit přesnost (resp. prakticky prediktivní schopnost) modelu. Příklad obojího je uveden v~sekci \ref{sec:test_design}. %odkazat se na další text, vysvětlit víc konkrétně již zde
 %
 % \subsection{Části adaptivního modelu}
 % Pro adaptivní testování je nutno
@@ -309,7 +309,7 @@ Pro modelování znalostí studenta v~rámci přístupu k~adaptivnímu testován
 \subsection{Formální definice}
 Bayesovskou síť pro naše účely můžeme definovat formálně jako uspořádanou dvojici orientovaného acyklického grafu $B_S = (V,E)$ (tzv. struktura sítě), kde každému prvku $i \in V$ odpovídá náhodná veličina $X_i$, a množiny $B_P$  funkcí $P(X_i\,|\,(X_j)_{j\in pa(i)})$, které udávají podmíněné pravděpodobnostní rozdělení $X_i$ v~závislosti na hodnotě veličin odpovídajících (přímým) předchůdcům (neboli rodičům) $i$ v~$B_S$ značeným jako $pa(i)$. (Toto značení je možná trochu zavádějící v~případě uzlů bez předchůdců, tedy u~nichž $pa(i) = \emptyset$, tam totiž vlastně nejde o~podmíněné pravděpodobnosti, ale pravděpodobnosti nepodmíněné.) Množinu všech náhodných veličin budu značit $\mathcal{X}=\{X_i\,|\,i \in V\}$.
 
-V~dále uvažovaných případech budou $X_i$ nabývat jen určitých diskrétních hodnot (stavů veličiny) z~množin $\mathbb{X}_i$, takže si prvky $B_P$ můžeme také představovat jako funkce zobrazující vektor stavů předchůdců $i$ v~$B_S$ na vektor pravděpodobností stavů $X_i$. Prakticky lze takovouto funkci zapsat jako tak zvanou tabulku podmíněných pravděpodobností. (Opět nemusí jít nutně o~pravěpodobnosti podmíněné.)
+V~dále uvažovaných případech budou $X_i$ nabývat jen určitých diskrétních hodnot (stavů veličiny) z~množin $\mathbb{X}_i$, takže si prvky $B_P$ můžeme také představovat jako funkce zobrazující vektor stavů předchůdců $i$ v~$B_S$ na vektor pravděpodobností stavů $X_i$. Prakticky lze takovouto funkci zapsat jako tak zvanou tabulku podmíněných pravděpodobností. (Opět nemusí jít nutně o~pravděpodobnosti podmíněné.)
 
 \subsection{Neformální popis}
 Bayesovské sítě popisují kauzální vztahy mezi pozorovanými náhodnými veličinami. V~našem případě půjde kauzální vztah mezi odpověďmi studenta na otázky v~testu a jeho měřenými dovednostmi.
@@ -347,7 +347,7 @@ Další příklad jsem vybral z~\cite{plajner16}. Na obrázku \ref{fig:complex_B
 \begin{figure}
   \centering
     \includegraphics[width=0.85\textwidth]{complex_BN_plajner16.pdf}
-  \caption{Příklad bayesovské síťě z~\cite{plajner16}.}
+  \caption{Příklad bayesovské sítě z~\cite{plajner16}.}
   \label{fig:complex_BN_plajner16}
 \end{figure}
 
@@ -356,7 +356,7 @@ Množina všech náhodných veličin $\mathcal{X}$ se ve zde blíže probíraný
 
 Vyhodnocení adaptivního testu bude v~následujícím textu znamenat na základě získaných dat vypočítat pravděpodobností stavů veličin z~$\mathcal{S}$. (Toto lze studentovi prezentovat jako pravděpodobnosti dosažené úrovně jeho znalostí, případně možná přístupněji třeba pomocí určitého odvozeného skóre a podobně.)
 
-Množinu $\mathcal{Q}$ ještě budeme někdy dělit na další 2 disjunktní podmnožiny $Q = \widehat{\mathcal{Q}} \cup \overline{\mathcal{Q}}$, kde $\widehat{\mathcal{Q}}$ je množina dosud nezodovězených otázek a $\overline{\mathcal{Q}}$ již zodpovězených.
+Množinu $\mathcal{Q}$ ještě budeme někdy dělit na další 2 disjunktní podmnožiny $Q = \widehat{\mathcal{Q}} \cup \overline{\mathcal{Q}}$, kde $\widehat{\mathcal{Q}}$ je množina dosud nezodpovězených otázek a $\overline{\mathcal{Q}}$ již zodpovězených.
 
 \subsection{Aktualizace modelu v~průběhu testování}
 Informace získané v~průběhu testování se do modelu vkládají tak, že se rozdělení veličiny z~$\mathcal{Q}$ na základě odpovědi na příslušnou otázku testu nahradí rozdělením, kde je jeden ze stavů již jistý (tedy vektor pravděpodobnostní stavů je pak vektor obsahující jeden prvek s~hodnotou 1 a všechny ostatní s~hodnotou 0). Toto umožní aktualizaci rozdělení ostatních veličin jak z~$\mathcal{S}$, tak z~$\widehat{\mathcal{Q}}$.
@@ -380,7 +380,7 @@ Sběru dat se celkem zúčastnilo 281 studentů. O~těchto studentech si autoři
 \subsection{Srovnání znalostních modelů}
 V~článku autoři porovnali celkem 14 různých modelů, které se lišily mj. počtem uvažovaných stavů náhodných veličin, počtem měřených dovedností a zahrnutím osobních dat studentů.
 
-Struktura sítě byla vždy pro daný srovnávaný model pevná (navržená na základě předpokladů autorů článku o~příslušných kauzálních vztazích). Tabulky podmínených pravděpodobností se vždy v~rámci desetinásobné křížové validace odhadly (naučily) na základě $\nicefrac{9}{10}$ náhodně vybraných případů (učící množiny). Jednotlivé modely pak byly porovnávány na základě chování modelu v~simulacích na zbývající $\nicefrac{1}{10}$ případů (testovací množině).
+Struktura sítě byla vždy pro daný srovnávaný model pevná (navržená na základě předpokladů autorů článku o~příslušných kauzálních vztazích). Tabulky podmíněných pravděpodobností se vždy v~rámci desetinásobné křížové validace odhadly (naučily) na základě $\nicefrac{9}{10}$ náhodně vybraných případů (učící množiny). Jednotlivé modely pak byly porovnávány na základě chování modelu v~simulacích na zbývající $\nicefrac{1}{10}$ případů (testovací množině).
 
 Modely autoři konkrétně porovnávali na základě míry úspěšnosti odhadu hodnocení zatím v~simulaci neřešených úloh na základě úloh již v~dané simulaci vyřešených a vyhodnocených, to celé v~závislosti na počtu vyřešených úloh (počtu odsimulovaných kroků testování). Za odhad se bral nejpravděpodobnější stav dané zatím neřešené úlohy v~danému kroku testu.
 
@@ -393,7 +393,7 @@ Zahrnutí osobních údajů o~studentovi do modelu vylepšilo úspěšnost před
 
 Složitější z~modelů pravděpodobně postihl tak zvaný over-fitting, to jest naučené tabulky podmíněných pravděpodobností nezobecňovaly dobře vztahy z~učící množiny pro testovací množinu, takže si nakonec nevedly dobře.
 
-V~jejich novějším článku \cite{plajner16} používají autoři mj. síť na obrázku \ref{fig:complex_BN_plajner16}, která se liší od té z~\cite{vomlel_plajner2015} hlavně přidáním souhrné dovednostní veličiny jako předchůdce všech ostatních veličin. Tato síť měla hlavně ve spojení s~jejich novým algoritmem pro učení z~testovací množiny mnohem lepší úspěšnost předpovědí.
+V~jejich novějším článku \cite{plajner16} používají autoři mj. síť na obrázku \ref{fig:complex_BN_plajner16}, která se liší od té z~\cite{vomlel_plajner2015} hlavně přidáním souhrnné dovednostní veličiny jako předchůdce všech ostatních veličin. Tato síť měla hlavně ve spojení s~jejich novým algoritmem pro učení z~testovací množiny mnohem lepší úspěšnost předpovědí.
 
 \begin{figure}
   \centering
@@ -406,7 +406,7 @@ V~jejich novějším článku \cite{plajner16} používají autoři mj. síť na
 
 \section{Strategie výběru otázek}
 \label{sec:question_selection}
-Na základě znalostního modelu se mohou v~průběhu adaptivního testování vybírat otázky k~zobrazení studentovi dle různých kritérií. Uvedu zde příklady jednoduchých \uv{hladových} stragií srovnávaných v~\cite{question_selection} určených pro bayesovské modely znalostí a poté nastíním i možné jiné, komplikovanější, strategie.
+Na základě znalostního modelu se mohou v~průběhu adaptivního testování vybírat otázky k~zobrazení studentovi dle různých kritérií. Uvedu zde příklady jednoduchých \uv{hladových} strategií srovnávaných v~\cite{question_selection} určených pro bayesovské modely znalostí a poté nastíním i možné jiné, komplikovanější, strategie.
 
 Nechť již zodpovězené otázky nabývají hodnot $e=\{Q_i=q_i|Q_i\in\overline{\mathcal{Q}}\}$, pak lze vybrat otázku na příklad následujícími způsoby.
 
@@ -553,7 +553,7 @@ class Skill(ModelBase, TimeStampMixin):
 
     __table_args__ = (UniqueConstraint('name', 'test_id', name='_test_skill_name_ux'),)
 \end{minted}
-\caption{Definice \uv{mixinu} pro časovou značku vytvoření a poslední změny a deklarace třídy pro dovednnost z~\texttt{datamodel/model.py}.}
+\caption{Definice \uv{mixinu} pro časovou značku vytvoření a poslední změny a deklarace třídy pro dovednost z~\texttt{datamodel/model.py}.}
 \label{lst:SkillDeclaration}
 \end{listing}
 
@@ -749,7 +749,7 @@ git clone https://github.com/FNj/CArisTotle
 cd CArisTotle
 \end{minted}
 poté, byť to není nezbytně nutné, je vhodné vytvořit si pro aplikaci virtuální prostředí \textit{Pythonu}
-Poté je potřeba nainstalovat knihovnu \texttt{catest} a další knihobny \textit{R}, na kterých je závislá. Vše potřebné je ve složce \texttt{dependencies/R}. Stačí si spustit interpreter (příkaz \mintinline{bash}|R|) a zadat příkaz:
+Poté je potřeba nainstalovat knihovnu \texttt{catest} a další knihovny \textit{R}, na kterých je závislá. Vše potřebné je ve složce \texttt{dependencies/R}. Stačí si spustit interpreter (příkaz \mintinline{bash}|R|) a zadat příkaz:
 \begin{minted}{R}
 source("dependencies/R/install_deps.R")
 \end{minted}
