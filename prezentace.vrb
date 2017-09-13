@@ -1,0 +1,20 @@
+\frametitle{Ukázka z Jinja šablony}
+\begin{minted}[fontsize=\footnotesize]{html}
+{% for test_instance in test_instances %}
+<article>
+    <div class="row">
+        <div class="six columns">
+            <p>Název případu: {{ test_instance.name }}</p>
+            <p>Případ zahájen: {{ test_instance.created_at }}</p>
+        </div>
+        <div class="six columns">
+            <a class="button"
+              href="{{ url_for('test_instance_overview',
+                               test_id=test.id,
+                               test_instance_id=test_instance.id) }}">
+                Otevřít přehled případu</a>
+        </div>
+    </div>
+</article>
+{% endfor %}
+\end{minted}
